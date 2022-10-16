@@ -15,6 +15,12 @@ public class TitleController : ControllerBase<TitleViewModel>
         // データマネージャー初期化
         DataManager.Init();
 
+        // サウンドマネージャー初期化
+        SoundManager.Init();
+
+        // パフォーマンスマネージャー
+        PerformanceManager.Init();
+
 #if SUSHI_DEBUG        
         // デバック機能初期化
         Debug.Log("デバックモードです");
@@ -26,7 +32,7 @@ public class TitleController : ControllerBase<TitleViewModel>
             Debug.Log("ゲームスタート");
 
             SceneManager.LoadScene("Main");
-            //NovelUtil.StartNovel("Magrou04");
+            //NovelUtil.StartNovel("Before0502");
         };
     }
 
