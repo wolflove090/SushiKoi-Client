@@ -102,7 +102,7 @@ public class BeforeCommandNovel : IMainAction
     {
         switch(week)
         {
-            case 1:
+            case 3:
                 return "Before0603";
             default:
                 return "";

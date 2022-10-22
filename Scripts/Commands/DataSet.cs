@@ -42,6 +42,21 @@ public class TmpValueForEdu : Command
     }
 }
 
+// 運動情報をtmp変数に代入
+[CommandAlias("strToTmpValue")]
+public class TmpValueForStr : Command
+{
+    public override async UniTask ExecuteAsync (AsyncToken asyncToken = default)
+    {
+        Debug.Log("運動情報取得");
+
+        var player = DataManager.GetPlayerChara();
+
+        // tmpへ代入
+        var valueManager = Engine.GetService<CustomVariableManager>();
+        valueManager.SetVariableValue("tmp", player.Str.Value.ToString());
+    }
+}
 
 // 好感度変動
 [CommandAlias("flucLikability")]
