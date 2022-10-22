@@ -26,6 +26,23 @@ public class DataSetForClub : Command
     }
 }
 
+// 学力情報をtmp変数に代入
+[CommandAlias("eduToTmpValue")]
+public class TmpValueForEdu : Command
+{
+    public override async UniTask ExecuteAsync (AsyncToken asyncToken = default)
+    {
+        Debug.Log("学力情報取得");
+
+        var player = DataManager.GetPlayerChara();
+
+        // tmpへ代入
+        var valueManager = Engine.GetService<CustomVariableManager>();
+        valueManager.SetVariableValue("tmp", player.Edu.Value.ToString());
+    }
+}
+
+
 // 好感度変動
 [CommandAlias("flucLikability")]
 public class DataSetForLikability : Command
@@ -38,7 +55,7 @@ public class DataSetForLikability : Command
 
         // 対象キャラ
         var target = DataManager.GetTargetCharaData();
-        target.Likability.Add(this.Amount); // TODO 一旦加算のみ、Addで減算もできたほうがいいかも
+        target.Likability.Add(this.Amount);
 
         // 表示用にtmpへ挿入
         var valueManager = Engine.GetService<CustomVariableManager>();
