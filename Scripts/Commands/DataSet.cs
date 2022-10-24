@@ -58,6 +58,42 @@ public class TmpValueForStr : Command
     }
 }
 
+// 所持金をtmp変数に代入
+[CommandAlias("moneyToTmpValue")]
+public class TmpValueForMoney : Command
+{
+    public override async UniTask ExecuteAsync (AsyncToken asyncToken = default)
+    {
+        Debug.Log("金銭情報取得");
+
+        var player = DataManager.GetPlayerChara();
+
+        // tmpへ代入
+        var valueManager = Engine.GetService<CustomVariableManager>();
+        valueManager.SetVariableValue("tmp", player.Money.Value.ToString());
+    }
+}
+
+// 所持金変動
+[CommandAlias("flucMoney")]
+public class DataSetForMoney : Command
+{
+    public IntegerParameter Amount;
+
+    public override async UniTask ExecuteAsync (AsyncToken asyncToken = default)
+    {
+        Debug.Log("所持金変動");
+
+        // 対象キャラ
+        var player = DataManager.GetPlayerChara();
+        player.Money.Add(this.Amount);
+
+        // 表示用にtmpへ挿入
+        var valueManager = Engine.GetService<CustomVariableManager>();
+        valueManager.SetVariableValue("tmp", this.Amount.ToString());
+    }
+}
+
 // 鮮度変動
 [CommandAlias("flucFreshness")]
 public class DataSetForFreshness : Command
