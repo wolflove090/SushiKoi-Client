@@ -24,4 +24,7 @@ public class MainViewModel : ViewModelBase
 
     // 日付更新演出
     public DayUpdateController DayUpdate;
+
+    // 選択肢
+    public ChoiceController ChoiceContent;
 }

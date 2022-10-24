@@ -48,6 +48,31 @@ public class MainController : ControllerBase<MainViewModel>
     }
 
     // --------------------
+    // 選択肢を出す
+    // 作ったけど使い所がまだないかも(使う場合は以下関数を調整して)
+    // --------------------
+    void _ShowChoice()
+    {
+        var choiceButtons = new ChoiceButton[5];
+        for(int i = 0; i < choiceButtons.Length; i++)
+        {
+            int index = i;
+            choiceButtons[index] = new ChoiceButton()
+            {
+                ButtonLabel = $"ボタン{index + 1}",
+                OnClick = () => 
+                {
+                    Debug.Log($"ボタン{index + 1}");
+                }
+            };
+        }
+        this._ViewModel.ChoiceContent.ExternalStart(new ChoiceLinker() 
+        {
+            ChoiceButtons = choiceButtons,
+        });
+    }
+
+    // --------------------
     // ログ用
     // --------------------
     static void _Log(string message)
