@@ -96,10 +96,11 @@ public class StatusLabel
 
         result.Add(new StatusLabel() 
         {
-            Name = "親愛度",
+            Name = "所持金",
             _GetValue = () => 
             {
-                return 0;
+                var player = DataManager.GetPlayerChara();
+                return player.Money.Value;
             }
         });
 

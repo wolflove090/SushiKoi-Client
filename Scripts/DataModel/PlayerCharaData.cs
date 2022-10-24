@@ -12,6 +12,8 @@ public class PlayerCharaData
     public IParam Str = new Str(); // 筋力,運動
     public IParam RicePower = new RicePower(); // シャリ力
 
+    public IParam Money = new Money(); // お金
+
     public IParam Freshness = new Freshness(); // 鮮度
 }
 
@@ -108,6 +110,28 @@ public class RicePower : IParam
         this._Value += amount;
     }
 }
+
+// --------------------
+// お金
+// --------------------
+public class Money : IParam
+{
+    public int Value
+    {
+        get
+        {
+            return this._Value;
+        }
+    }
+    int _Value = 500;
+
+    // 加算
+    void IParam.Add(int amount)
+    {
+        this._Value += amount;
+    }
+}
+
 
 // --------------------
 // 鮮度

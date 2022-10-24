@@ -172,7 +172,7 @@ public class CommandAction
 
                 // 成功した時だけ上昇
                 if(isSucess)
-                    player.RicePower.Add(10);
+                    player.Money.Add(100);
 
                 // アクション演出の実行  
                 actionController.ExternalStart(new CommandActionLinker()
