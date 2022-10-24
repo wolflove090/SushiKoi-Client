@@ -131,7 +131,19 @@ public class StatusLabel
             {
                 var player = DataManager.GetPlayerChara();
                 return player.RicePower.Value;
-            }        });
+            }        
+        });
+
+
+        result.Add(new StatusLabel() 
+        {
+            Name = "鮮度",
+            _GetValue = () => 
+            {
+                var player = DataManager.GetPlayerChara();
+                return player.Freshness.Value;
+            }        
+        });
 
         return result.ToArray();
     }

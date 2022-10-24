@@ -26,6 +26,7 @@ public class MainController : ControllerBase<MainViewModel>
         this._MainActionList.Add(new CommandNovel(this._ViewModel.CommandButton, this._ViewModel.ComanndList.transform, this._ViewModel.CommandAction));
         this._MainActionList.Add(new AfterCommandNovel());
         this._MainActionList.Add(new OverTheDateEffect(this._ViewModel.DateLabel, this._ViewModel.DayUpdate));
+        this._MainActionList.Add(new UpdatePlayerData());
         this._MainActionList.Add(new StatusUpdate(this._ViewModel.StatusContent, this._ViewModel.Status));
         this._MainActionList.Add(new LikabilityUpdate(this._ViewModel.LikabilityStatus));
         this._MainActionList.Add(new AutoSave());
