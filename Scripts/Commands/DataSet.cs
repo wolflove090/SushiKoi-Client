@@ -58,6 +58,26 @@ public class TmpValueForStr : Command
     }
 }
 
+// 鮮度変動
+[CommandAlias("flucFreshness")]
+public class DataSetForFreshness : Command
+{
+    public IntegerParameter Amount;
+
+    public override async UniTask ExecuteAsync (AsyncToken asyncToken = default)
+    {
+        Debug.Log("鮮度変動");
+
+        // 対象キャラ
+        var player = DataManager.GetPlayerChara();
+        player.Freshness.Add(this.Amount);
+
+        // 表示用にtmpへ挿入
+        var valueManager = Engine.GetService<CustomVariableManager>();
+        valueManager.SetVariableValue("tmp", this.Amount.ToString());
+    }
+}
+
 // 好感度変動
 [CommandAlias("flucLikability")]
 public class DataSetForLikability : Command

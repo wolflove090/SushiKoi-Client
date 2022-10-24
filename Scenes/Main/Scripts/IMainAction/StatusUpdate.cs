@@ -60,7 +60,6 @@ public class StatusUpdate : IMainAction
         {
             status.Update();
         }
-
     }
 }
 
