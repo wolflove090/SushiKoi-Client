@@ -34,6 +34,29 @@ public class TitleController : ControllerBase<TitleViewModel>
             SceneManager.LoadScene("Main");
             //NovelUtil.StartNovel("Before0502");
         };
+
+        // 初めからボタン
+        this._ViewModel.StartButton.OnClick = () => 
+        {
+            Debug.Log("初めから");
+            SceneManager.LoadScene("Main");
+        };
+
+        // 続きからボタン
+        this._ViewModel.ContinueButton.OnClick = () => 
+        {
+            Debug.Log("続きから");
+            DataManager.Load();
+            SceneManager.LoadScene("Main");
+        };
+
+        // データの初期化
+        this._ViewModel.ResetButton.OnClick = () => 
+        {
+            Debug.Log("データリセット");
+            DataManager.Reset();
+        };
+
     }
 
 }

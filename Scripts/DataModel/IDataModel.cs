@@ -5,5 +5,7 @@ using UnityEngine;
 public interface IDataModel
 {
     void Save();
+    void Load();
+
     void Reset();
 }

@@ -66,22 +66,9 @@ public class DateData : IDataModel
 
     public DateData()
     {
-        bool existData = PlayerPrefs.HasKey(KEY_MONTH) && PlayerPrefs.HasKey(KEY_WEEK);
-
-        // TODO 一旦セーブ機能なし
-        existData = false;
-
-        // データがなければ初期値を設定
-        if(!existData)
-        {
-            // 4月1週から開始
-            this.Month = 4;
-            this.Week = 1;
-            return;
-        }
-
-        this.Month = PlayerPrefs.GetInt(KEY_MONTH);
-        this.Week = PlayerPrefs.GetInt(KEY_WEEK);
+        // 4月1週から開始
+        this.Month = 4;
+        this.Week = 1;
     }
 
     // --------------------
@@ -109,6 +96,28 @@ public class DateData : IDataModel
         PlayerPrefs.SetInt(KEY_MONTH, this.Month);
         PlayerPrefs.SetInt(KEY_WEEK, this.Week);
     }
+
+    // --------------------
+    // ロード
+    // --------------------
+    void IDataModel.Load()
+    {
+        Debug.Log("ロードする");
+        bool existData = PlayerPrefs.HasKey(KEY_MONTH) && PlayerPrefs.HasKey(KEY_WEEK);
+
+        // データがなければ初期値を設定
+        if(!existData)
+        {
+            // 4月1週から開始
+            this.Month = 4;
+            this.Week = 1;
+            return;
+        }
+
+        this.Month = PlayerPrefs.GetInt(KEY_MONTH);
+        this.Week = PlayerPrefs.GetInt(KEY_WEEK);
+    }
+
 
     // --------------------
     // リセット

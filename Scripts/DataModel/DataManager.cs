@@ -50,6 +50,29 @@ public class DataManager
     }
 
     // --------------------
+    // データロード
+    // --------------------
+    public static void Load()
+    {
+        Debug.Log("ロード");
+
+        // DataManagerが持っているDataModelのプロパティのセーブを実行
+        var type = typeof(DataManager);
+        var fields = type.GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        foreach(var field in fields)
+        {
+            var fieldType = field.FieldType;
+            if(fieldType.GetInterfaces().Contains(typeof(IDataModel)))
+            {
+                // ロード実行
+                var value = field.GetValue(_Singleton);
+                var dataModel = value as IDataModel;
+                dataModel.Load();
+            }
+        }
+    }
+
+    // --------------------
     // リセット
     // --------------------
     public static void Reset()
