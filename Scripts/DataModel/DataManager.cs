@@ -6,6 +6,16 @@ using System.Linq;
 public class DataManager
 {
     const string KEY = "SaveData";
+    const int SAVE_NUM = 1; // 複数セーブ実装用に一旦数字を指定
+
+    string SaveKey
+    {
+        get
+        {
+            return $"{KEY}_{SAVE_NUM}";
+        }
+
+    }
 
     static DataManager _Singleton;
 
@@ -55,7 +65,7 @@ public class DataManager
         // セーブ実行
         var json = JsonUtility.ToJson(saveData);
         Debug.Log(json);
-        PlayerPrefs.SetString(KEY, json);
+        PlayerPrefs.SetString(_Singleton.SaveKey, json);
     }
 
     // --------------------
@@ -65,13 +75,13 @@ public class DataManager
     {
         Debug.Log("ロード");
 
-        bool exisData = PlayerPrefs.HasKey(KEY);
+        bool exisData = PlayerPrefs.HasKey(_Singleton.SaveKey);
         if(!exisData)
         {
             Debug.LogWarning("セーブデータが存在しません");
             return;
         }
-        string json = PlayerPrefs.GetString(KEY);
+        string json = PlayerPrefs.GetString(_Singleton.SaveKey);
         var saveData = JsonUtility.FromJson<SaveData>(json);
 
         // DataManagerが持っているDataModelのプロパティのセーブを実行
@@ -96,7 +106,7 @@ public class DataManager
     public static void Reset()
     {
         Debug.Log("データのリセット");
-        PlayerPrefs.DeleteKey(KEY);
+        PlayerPrefs.DeleteKey(_Singleton.SaveKey);
     }
 
     // --------------------
