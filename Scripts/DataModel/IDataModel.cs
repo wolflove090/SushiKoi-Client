@@ -4,8 +4,6 @@ using UnityEngine;
 
 public interface IDataModel
 {
-    void Save();
-    void Load();
-
-    void Reset();
+    void Load(SaveData saveData);
+    SaveData SetSaveData(SaveData saveData);
 }

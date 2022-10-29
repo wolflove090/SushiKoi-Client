@@ -11,6 +11,13 @@ public class DateData : IDataModel
     public string KEY_WEEK = "DateDataWeek";
     public string KEY_MONTH = "DateDataMonth";
 
+    // データ保存用クラス
+    class DateSaveData
+    {
+        public int Month;
+        public int Week;
+    }
+
     public int Week
     {
         set
@@ -88,24 +95,27 @@ public class DateData : IDataModel
     }
 
     // --------------------
-    // セーブ
-    // --------------------
-    void IDataModel.Save()
-    {
-        Debug.Log("セーブする");
-        PlayerPrefs.SetInt(KEY_MONTH, this.Month);
-        PlayerPrefs.SetInt(KEY_WEEK, this.Week);
-    }
-
-    // --------------------
     // ロード
     // --------------------
-    void IDataModel.Load()
+    void IDataModel.Load(SaveData saveData)
     {
-        Debug.Log("ロードする");
-        bool existData = PlayerPrefs.HasKey(KEY_MONTH) && PlayerPrefs.HasKey(KEY_WEEK);
+        var data = JsonUtility.FromJson<DateSaveData>(saveData.DateJson);
 
         // データがなければ初期値を設定
+        if(data == null)
+        {
+            // 4月1週から開始
+            this.Month = 4;
+            this.Week = 1;
+            return;
+        }
+
+        this.Month = data.Month;
+        this.Week = data.Week;
+        return;
+
+        bool existData = PlayerPrefs.HasKey(KEY_MONTH) && PlayerPrefs.HasKey(KEY_WEEK);
+
         if(!existData)
         {
             // 4月1週から開始
@@ -118,14 +128,19 @@ public class DateData : IDataModel
         this.Week = PlayerPrefs.GetInt(KEY_WEEK);
     }
 
-
     // --------------------
-    // リセット
+    // Jsonに変換
     // --------------------
-    void IDataModel.Reset()
+    SaveData IDataModel.SetSaveData(SaveData saveData)
     {
-        Debug.Log("リセットする");
-        PlayerPrefs.SetInt(KEY_MONTH, 4);
-        PlayerPrefs.SetInt(KEY_WEEK, 1);
+        // セーブデータに値を挿入
+        var data = new DateSaveData()
+        {
+            Month = this.Month,
+            Week = this.Week,
+        };
+        saveData.DateJson = JsonUtility.ToJson(data);
+
+        return saveData;
     }
 }

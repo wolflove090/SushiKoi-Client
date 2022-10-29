@@ -5,6 +5,8 @@ using System.Linq;
 
 public class DataManager
 {
+    const string KEY = "SaveData";
+
     static DataManager _Singleton;
 
     DateData _Date = new DateData();
@@ -33,6 +35,8 @@ public class DataManager
     {
         Debug.Log("セーブ");
 
+        var saveData = new SaveData();
+
         // DataManagerが持っているDataModelのプロパティのセーブを実行
         var type = typeof(DataManager);
         var fields = type.GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -41,12 +45,17 @@ public class DataManager
             var fieldType = field.FieldType;
             if(fieldType.GetInterfaces().Contains(typeof(IDataModel)))
             {
-                // セーブ実行
+                // セーブデータ挿入
                 var value = field.GetValue(_Singleton);
                 var dataModel = value as IDataModel;
-                dataModel.Save();
+                saveData = dataModel.SetSaveData(saveData);
             }
         }
+
+        // セーブ実行
+        var json = JsonUtility.ToJson(saveData);
+        Debug.Log(json);
+        PlayerPrefs.SetString(KEY, json);
     }
 
     // --------------------
@@ -55,6 +64,15 @@ public class DataManager
     public static void Load()
     {
         Debug.Log("ロード");
+
+        bool exisData = PlayerPrefs.HasKey(KEY);
+        if(!exisData)
+        {
+            Debug.LogWarning("セーブデータが存在しません");
+            return;
+        }
+        string json = PlayerPrefs.GetString(KEY);
+        var saveData = JsonUtility.FromJson<SaveData>(json);
 
         // DataManagerが持っているDataModelのプロパティのセーブを実行
         var type = typeof(DataManager);
@@ -67,7 +85,7 @@ public class DataManager
                 // ロード実行
                 var value = field.GetValue(_Singleton);
                 var dataModel = value as IDataModel;
-                dataModel.Load();
+                dataModel.Load(saveData);
             }
         }
     }
@@ -78,21 +96,7 @@ public class DataManager
     public static void Reset()
     {
         Debug.Log("データのリセット");
-
-        // DataManagerが持っているDataModelのプロパティのリセットを実行
-        var type = typeof(DataManager);
-        var fields = type.GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        foreach(var field in fields)
-        {
-            var fieldType = field.FieldType;
-            if(fieldType.GetInterfaces().Contains(typeof(IDataModel)))
-            {
-                // リセット実行
-                var value = field.GetValue(_Singleton);
-                var dataModel = value as IDataModel;
-                dataModel.Reset();
-            }
-        }    
+        PlayerPrefs.DeleteKey(KEY);
     }
 
     // --------------------
@@ -139,4 +143,12 @@ public class DataManager
         // TODO 一旦一人だけ
         return _Singleton._TargetCharas.First();
     }
+}
+
+// --------------------
+// セーブ用データクラス
+// --------------------
+public class SaveData
+{
+    public string DateJson;
 }
