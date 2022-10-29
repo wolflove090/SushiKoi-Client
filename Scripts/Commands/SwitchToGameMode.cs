@@ -28,7 +28,7 @@ public class SwitchToGameMode : Command
         naniCamera.enabled = false;
 
         // ルートを切り替え
-        Engine.RootObject.gameObject.active = false;
+        Engine.RootObject.gameObject.SetActive(false);
 
         // ノベル終了コールバック
         // TODO ノベルから → ゲームを判断できると良い

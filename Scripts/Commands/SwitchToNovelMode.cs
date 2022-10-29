@@ -17,7 +17,7 @@ public class SwitchToNovelMode : Command
         // カメラの有効化
         Engine.GetService<ICameraManager>().Camera.enabled = true;
         Engine.GetService<ICameraManager>().Camera.clearFlags = CameraClearFlags.Depth;
-        Engine.RootObject.gameObject.active = true;
+        Engine.RootObject.gameObject.SetActive(true);
 
         // Naninovel入力の有効化
         var inputManager = Engine.GetService<IInputManager>();
