@@ -8,9 +8,6 @@ using System;
 // --------------------
 public class DateData : IDataModel
 {
-    public string KEY_WEEK = "DateDataWeek";
-    public string KEY_MONTH = "DateDataMonth";
-
     // データ保存用クラス
     class DateSaveData
     {
@@ -112,20 +109,6 @@ public class DateData : IDataModel
 
         this.Month = data.Month;
         this.Week = data.Week;
-        return;
-
-        bool existData = PlayerPrefs.HasKey(KEY_MONTH) && PlayerPrefs.HasKey(KEY_WEEK);
-
-        if(!existData)
-        {
-            // 4月1週から開始
-            this.Month = 4;
-            this.Week = 1;
-            return;
-        }
-
-        this.Month = PlayerPrefs.GetInt(KEY_MONTH);
-        this.Week = PlayerPrefs.GetInt(KEY_WEEK);
     }
 
     // --------------------

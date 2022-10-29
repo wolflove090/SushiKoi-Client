@@ -151,4 +151,7 @@ public class DataManager
 public class SaveData
 {
     public string DateJson;
+    public string ClubJson;
+    public string PlayerJson;
+    public string TargetJson; // 今はまぐろうのみ。今後は別々のデータとして保存する
 }

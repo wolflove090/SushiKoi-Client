@@ -5,8 +5,13 @@ using UnityEngine;
 // --------------------
 // 部活情報
 // --------------------
-public class ClubData
+public class ClubData : IDataModel
 {
+    class ClubSaveData
+    {
+        public int ClubType;
+    }
+
     public enum ClubType
     {
         None = 0, // 無所属
@@ -63,5 +68,34 @@ public class ClubData
             default:
                 throw new System.Exception("未定義");
         }
+    }
+
+    // --------------------
+    // ロード
+    // --------------------
+    void IDataModel.Load(SaveData saveData)
+    {
+        var data = JsonUtility.FromJson<ClubSaveData>(saveData.ClubJson);
+
+        // データがなければ抜ける
+        if(data == null)
+            return;
+
+        this.Affilication = (ClubType)data.ClubType;
+    }
+
+    // --------------------
+    // Jsonに変換
+    // --------------------
+    SaveData IDataModel.SetSaveData(SaveData saveData)
+    {
+        // セーブデータに値を挿入
+        var data = new ClubSaveData()
+        {
+            ClubType = (int)this.Affilication,
+        };
+        saveData.ClubJson = JsonUtility.ToJson(data);
+
+        return saveData;
     }
 }
