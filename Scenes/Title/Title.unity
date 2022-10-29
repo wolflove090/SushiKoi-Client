@@ -315,7 +315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &670123165
 RectTransform:
   m_ObjectHideFlags: 0
@@ -373,6 +373,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 670123164}
   m_CullTransparentMesh: 0
+--- !u!114 &784280724 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5472117097902895265, guid: 7ca7a6597b6c1489eb1a8e347bc662ea,
+    type: 3}
+  m_PrefabInstance: {fileID: 2016192933}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9095de35e3477454fa49a74abf912e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &879060125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1400,8 +1412,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5176262774203032219}
-  - component: {fileID: 5176262774203032221}
   - component: {fileID: 5176262774203032220}
+  - component: {fileID: 5176262774203032221}
   m_Layer: 0
   m_Name: GUIRoot
   m_TagString: Untagged
@@ -1460,6 +1472,7 @@ MonoBehaviour:
   GameStart: {fileID: 5472117099328395934}
   StartButton: {fileID: 641582421}
   ContinueButton: {fileID: 420167735}
+  ResetButton: {fileID: 784280724}
 --- !u!4 &5176262774328074516
 Transform:
   m_ObjectHideFlags: 0
@@ -1511,7 +1524,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5472117099328395933
 RectTransform:
   m_ObjectHideFlags: 0
