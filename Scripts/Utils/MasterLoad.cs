@@ -9,10 +9,10 @@ public class MasterUtil
     // --------------------
     // マスタをCSVから取得
     // --------------------
-    public static T[] LoadAll<T>() 
+    public static T[] LoadAll<T>(string masterPath) 
         where T : class, new()
     {
-        var csvFile = Resources.Load<TextAsset>("master_test");
+        var csvFile = Resources.Load<TextAsset>(masterPath);
 
         // テキストデータを配列に変換
         var lines = csvFile.text.Split(new []{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
@@ -66,11 +66,24 @@ public class MasterUtil
             var instance = new T();
             foreach(var field in fieldInfos)
             {
+                Type fieldType = field.FieldType;
+                Debug.Log(fieldType);
                 var columnName = field.GetCustomAttribute<CsvColumnAtrribute>().Name;
                 int index = columnIndex[columnName];
                 var value = colums[index];
 
-                field.SetValue(instance, value);
+                if(fieldType == typeof(int))
+                {
+                    field.SetValue(instance, int.Parse(value));
+                }
+                else if(fieldType == typeof(string))
+                {
+                    field.SetValue(instance, value);
+                }else
+                {
+                    throw new Exception($"未定義のタイプ ---> {fieldType}");
+                }
+
             }
 
             convertData.Add(instance);
