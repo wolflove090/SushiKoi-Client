@@ -13,6 +13,13 @@ public class AutoPlay : Editor
     // 保存キー
     public const string KEY = "AutoPlay";
 
+    public enum PlayType
+    {
+        None = 0,
+        Beginning = 1,
+        Continue = 2,
+    }
+
     [MenuItem("すし恋/AutoPlay")]
     static void _Exec()
     {
@@ -34,14 +41,13 @@ public class AutoPlayExec : MonoBehaviour
 #if !SUSHI_DEBUG  
         return;      
 #endif        
-        var isAutoPlay = PlayerPrefs.GetInt(AutoPlay.KEY);
-        if(isAutoPlay != 1)
+        var autoPlayType = PlayerPrefs.GetInt(AutoPlay.KEY);
+        if(autoPlayType == 0)
             return;
 
         SceneManager.LoadScene("Title");
-        
+
         // オートプレイ用のオブジェクトを生成
-        PlayerPrefs.SetInt(AutoPlay.KEY, 0);
         var obj = new GameObject("AutoPlay");
         obj.AddComponent<AutoPlayExec>();
         GameObject.DontDestroyOnLoad(obj);
@@ -51,19 +57,45 @@ public class AutoPlayExec : MonoBehaviour
     // スタートのタイミングでオートプレイ実行    
     void Start() 
     {
-        this.ExecAutoPlay();
+        var autoPlayType = (AutoPlay.PlayType)PlayerPrefs.GetInt(AutoPlay.KEY);
+        if(autoPlayType == AutoPlay.PlayType.None)
+            return;
+
+        PlayerPrefs.SetInt(AutoPlay.KEY, 0);
+
+        switch(autoPlayType)
+        {
+            case AutoPlay.PlayType.Beginning:
+                this.ExecAutoPlayBeginning();
+                break;
+            case AutoPlay.PlayType.Continue:
+                this.ExecAutoPlayContinue();
+                break;
+
+        }
     }
 
     // --------------------
     // オートプレイの実行(仮)
     // シナリオを用意できるようにする
     // --------------------
-    async UniTask ExecAutoPlay()
+    async UniTask ExecAutoPlayBeginning()
     {
         // 初期化待機用
         await UniTask.Delay(1000);
         this.Click("StartButton");
     }
+
+    // --------------------
+    // オートプレイの実行(続きから)
+    // --------------------
+    async UniTask ExecAutoPlayContinue()
+    {
+        // 初期化待機用
+        await UniTask.Delay(1000);
+        this.Click("ContinueButton");
+    }
+
 
     // --------------------
     // オブジェクト名から対象のボタンをタップ

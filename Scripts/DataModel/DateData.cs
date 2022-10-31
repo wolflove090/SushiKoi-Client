@@ -92,6 +92,22 @@ public class DateData : IDataModel
     }
 
     // --------------------
+    // 週設定
+    // --------------------
+    public void SetWeek(int week)
+    {
+        this.Week = week;
+    }
+
+    // --------------------
+    // 月設定
+    // --------------------
+    public void SetMonth(int month)
+    {
+        this.Month = month;
+    }
+
+    // --------------------
     // ロード
     // --------------------
     void IDataModel.Load(SaveData saveData)
