@@ -81,6 +81,7 @@ public class PlayerCharaData : IDataModel
 public interface IParam
 {
     int Value{get;}
+    void Set(int value);
     void Add(int amount);
     void LoadData(SaveData saveData);
 }
@@ -99,6 +100,11 @@ public class Hp : IParam
         }
     }
     int _Value = 100;
+
+    void IParam.Set(int value)
+    {
+        this._Value = value;
+    }
 
     // 加算
     void IParam.Add(int amount)
@@ -133,6 +139,11 @@ public class Edu : IParam
     }
     int _Value = 0;
 
+    void IParam.Set(int value)
+    {
+        this._Value = value;
+    }
+
     // 加算
     void IParam.Add(int amount)
     {
@@ -165,6 +176,11 @@ public class Str : IParam
         }
     }
     int _Value = 0;
+
+    void IParam.Set(int value)
+    {
+        this._Value = value;
+    }
 
     // 加算
     void IParam.Add(int amount)
@@ -199,6 +215,11 @@ public class RicePower : IParam
     }
     int _Value = 0;
 
+    void IParam.Set(int value)
+    {
+        this._Value = value;
+    }
+
     // 加算
     void IParam.Add(int amount)
     {
@@ -231,6 +252,11 @@ public class Money : IParam
         }
     }
     int _Value = 500;
+
+    void IParam.Set(int value)
+    {
+        this._Value = value;
+    }
 
     // 加算
     void IParam.Add(int amount)
@@ -265,6 +291,11 @@ public class Freshness : IParam
         }
     }
     int _Value = 100;
+
+    void IParam.Set(int value)
+    {
+        this._Value = value;
+    }
 
     // 加算
     void IParam.Add(int amount)

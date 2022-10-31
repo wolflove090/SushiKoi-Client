@@ -21,10 +21,7 @@ public class DataManager
     DateData _Date = new DateData();
     ClubData _Club = new ClubData();
     PlayerCharaData _Player = new PlayerCharaData();
-    TargetCharaData[] _TargetCharas = new TargetCharaData[]
-    {
-        new TargetCharaData(),
-    };
+    TargetCharaData _Magrou = new TargetCharaData();
 
     // --------------------
     // 初期化処理
@@ -111,6 +108,23 @@ public class DataManager
     }
 
     // --------------------
+    // ロードデータ取得
+    // --------------------
+    public static SaveData GetSaveData()
+    {
+        bool exisData = PlayerPrefs.HasKey(SaveKey);
+        if(!exisData)
+        {
+            Debug.LogWarning("セーブデータが存在しません");
+            return new SaveData();
+        }
+        string json = PlayerPrefs.GetString(SaveKey);
+        var saveData = JsonUtility.FromJson<SaveData>(json);
+
+        return saveData;
+    }
+
+    // --------------------
     // リセット
     // --------------------
     public static void Reset()
@@ -160,8 +174,8 @@ public class DataManager
         if(_Singleton == null)
             throw new System.Exception("シングルトン未作成");
 
-        // TODO 一旦一人だけ
-        return _Singleton._TargetCharas.First();
+        // TODO 一旦まぐろうのみだけ
+        return _Singleton._Magrou;
     }
 }
 

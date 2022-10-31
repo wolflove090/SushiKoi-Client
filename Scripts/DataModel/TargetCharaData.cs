@@ -65,6 +65,11 @@ public class Likability : IParam
     }
     int _Value = 0;
 
+    void IParam.Set(int value)
+    {
+        this._Value = value;
+    }
+
     // 加算
     void IParam.Add(int amount)
     {
