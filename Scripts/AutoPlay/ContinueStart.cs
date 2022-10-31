@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class AutoPlayWindow : EditorWindow
+// --------------------
+// 続きからプレイ
+// --------------------
+public class ContinueStart : EditorWindow
 {
-    [MenuItem("すし恋/AutoPlayWindow")]
+    [MenuItem("すし恋/ContinueStart")]
     static void _ShowWindow()
     {
-        var window = EditorWindow.GetWindow<AutoPlayWindow>();
+        var window = EditorWindow.GetWindow<ContinueStart>();
         window.maxSize = new Vector2(300,500);
         window.Show();
     }

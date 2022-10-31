@@ -66,10 +66,10 @@ public class AutoPlayExec : MonoBehaviour
         switch(autoPlayType)
         {
             case AutoPlay.PlayType.Beginning:
-                this.ExecAutoPlayBeginning();
+                this.ExecAutoPlayBeginning().Forget();
                 break;
             case AutoPlay.PlayType.Continue:
-                this.ExecAutoPlayContinue();
+                this.ExecAutoPlayContinue().Forget();
                 break;
 
         }
