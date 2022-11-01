@@ -13,23 +13,33 @@ public class NovelViwer : EditorWindow
         window.Show();
     }
 
-    Vector2 _ScrollPos;
-    bool _ShowBeforeNovel;
-
-    NovelData[] _BeforeNovelDatas;
+    NovelData _BeforeNovelData;
+    NovelData _AfterNovelData;
 
     void OnGUI()
     {
         // 初期化処理
-        if(this._BeforeNovelDatas == null)
+        if(this._BeforeNovelData == null)
         {
-            // ノベルマスタの取得
+            // コマンド前 ノベルマスタの取得
             var mstBeforeNovels = MasterUtil.LoadAll<BeforeCommandNovelData>("MasterData/before_command_novel");
-            this._BeforeNovelDatas = new NovelData[mstBeforeNovels.Length];
+            
+            this._BeforeNovelData = new NovelData();
+            this._BeforeNovelData.NovelViewDatas = new NovelViewData[mstBeforeNovels.Length];
             for(int i = 0; i < mstBeforeNovels.Length; i++)
             {
                 var data = mstBeforeNovels[i];
-                this._BeforeNovelDatas[i] = new NovelData(data);
+                this._BeforeNovelData.NovelViewDatas[i] = new NovelViewData(data);
+            }
+
+            // コマンド後 ノベルマスタの取得
+            var mstAfterNovels = MasterUtil.LoadAll<AfterCommandNovelData>("MasterData/after_command_novel");
+            this._AfterNovelData = new NovelData();
+            this._AfterNovelData.NovelViewDatas = new NovelViewData[mstAfterNovels.Length];
+            for(int i = 0; i < mstAfterNovels.Length; i++)
+            {
+                var data = mstAfterNovels[i];
+                this._AfterNovelData.NovelViewDatas[i] = new NovelViewData(data);
             }
         }
 
@@ -38,14 +48,14 @@ public class NovelViwer : EditorWindow
         // --------------------
         var color = GUI.color;
         GUI.color = Color.cyan;
-        this._ShowBeforeNovel = EditorGUILayout.Foldout(this._ShowBeforeNovel, "コマンド前ノベル", true);
+        this._BeforeNovelData.ShowNovels = EditorGUILayout.Foldout(this._BeforeNovelData.ShowNovels, "コマンド前ノベル", true);
         GUI.color = color;
 
-        if(this._ShowBeforeNovel)
+        if(this._BeforeNovelData.ShowNovels)
         {
-            using (var scroll = new EditorGUILayout.ScrollViewScope(this._ScrollPos, "box"))
+            using (var scroll = new EditorGUILayout.ScrollViewScope(this._BeforeNovelData.ScrollPos, "box"))
             {
-                this._ScrollPos = scroll.scrollPosition;
+                this._BeforeNovelData.ScrollPos = scroll.scrollPosition;
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
@@ -55,11 +65,46 @@ public class NovelViwer : EditorWindow
                 }
 
                 // ノベルデータ表示
-                for(int i = 0; i < this._BeforeNovelDatas.Length; i++)
+                for(int i = 0; i < this._BeforeNovelData.NovelViewDatas.Length; i++)
                 {
                     using(new EditorGUILayout.HorizontalScope("box"))
                     {
-                        var novel = this._BeforeNovelDatas[i];
+                        var novel = this._BeforeNovelData.NovelViewDatas[i];
+                        EditorGUILayout.LabelField($"{novel.Month}月 / {novel.Week}週", GUILayout.Width(100));
+                        EditorGUILayout.LabelField(novel.Description, GUILayout.Width(200));
+                        EditorGUILayout.ObjectField(novel.NovelFile, typeof(TextAsset), GUILayout.Width(200));
+                    }
+                }
+            }
+        }
+
+        // --------------------
+        // コマンド後ADV
+        // --------------------
+        color = GUI.color;
+        GUI.color = Color.cyan;
+        this._AfterNovelData.ShowNovels = EditorGUILayout.Foldout(this._AfterNovelData.ShowNovels, "コマンド後ノベル", true);
+        GUI.color = color;
+
+        if(this._AfterNovelData.ShowNovels)
+        {
+            using (var scroll = new EditorGUILayout.ScrollViewScope(this._AfterNovelData.ScrollPos, "box"))
+            {
+                this._AfterNovelData.ScrollPos = scroll.scrollPosition;
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("再生タイミング", GUILayout.Width(100));
+                    EditorGUILayout.LabelField("説明", GUILayout.Width(200));
+                    EditorGUILayout.LabelField("ファイル", GUILayout.Width(200));
+                }
+
+                // ノベルデータ表示
+                for(int i = 0; i < this._AfterNovelData.NovelViewDatas.Length; i++)
+                {
+                    using(new EditorGUILayout.HorizontalScope("box"))
+                    {
+                        var novel = this._AfterNovelData.NovelViewDatas[i];
                         EditorGUILayout.LabelField($"{novel.Month}月 / {novel.Week}週", GUILayout.Width(100));
                         EditorGUILayout.LabelField(novel.Description, GUILayout.Width(200));
                         EditorGUILayout.ObjectField(novel.NovelFile, typeof(TextAsset), GUILayout.Width(200));
@@ -69,20 +114,42 @@ public class NovelViwer : EditorWindow
         }
     }
 
+    // --------------------
+    // ノベル表示用の構造体クラス
+    // --------------------
     class NovelData
+    {
+        public NovelViewData[] NovelViewDatas;
+        public Vector2 ScrollPos;
+        public bool ShowNovels;
+    }
+
+    // --------------------
+    // 表示用ノベルデータ
+    // --------------------
+    class NovelViewData
     {
         public int Month;
         public int Week;
         public UnityEngine.Object NovelFile;
         public string Description;
 
-        public NovelData(BeforeCommandNovelData data)
+        public NovelViewData(BeforeCommandNovelData data)
         {
             this.Month = data.Month;
             this.Week = data.Week;
             this.Description = data.Description;
 
             this.NovelFile = Resources.Load($"NovelScripts/BeforeCommandNovel/{data.NovelName}");
+        }
+
+        public NovelViewData(AfterCommandNovelData data)
+        {
+            this.Month = data.Month;
+            this.Week = data.Week;
+            this.Description = data.Description;
+
+            this.NovelFile = Resources.Load($"NovelScripts/AfterCommandNovel/{data.NovelName}");
         }
     }
 

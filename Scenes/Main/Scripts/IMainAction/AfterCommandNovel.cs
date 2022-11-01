@@ -1,12 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 // --------------------
 // コマンド後ADV
 // --------------------
 public class AfterCommandNovel : IMainAction
 {
+    AfterCommandNovelData[] _NovelMaster;
+
+    public AfterCommandNovel()
+    {
+        // ノベルマスタの取得
+        this._NovelMaster = MasterUtil.LoadAll<AfterCommandNovelData>("MasterData/after_command_novel");
+    }
+
     void IMainAction.Play(System.Action onComplete)
     {
         string novelName = this._GetAfterNovelName();
@@ -34,55 +43,11 @@ public class AfterCommandNovel : IMainAction
     {
         var date = DataManager.GetDate();
 
-        switch (date.Month)
-        {
-            case 4:
-                return this._GetAprilNovelName(date.Week);
-            default:
-                return "";
-        }
-    }
+        var novel = this._NovelMaster.FirstOrDefault(item => item.Month == date.Month && item.Week == date.Week);
+        if(novel == null)
+            return "";
 
-    // --------------------
-    // 4月のADV
-    // --------------------
-    string _GetAprilNovelName(int week)
-    {
-        switch (week)
-        {
-            case 2:
-                return "After0402";
-            default:
-                return "";
-        }
-    }
-
-    // --------------------
-    // 8月のADV
-    // --------------------
-    string _GetAugustNovelName(int week)
-    {
-        switch(week)
-        {
-            case 2:
-                return "After0802";
-            default:
-                return "";
-        }
-    }
-
-    // --------------------
-    // 12月のADV
-    // --------------------
-    string _GetDecemberNovelName(int week)
-    {
-        switch(week)
-        {
-            case 4:
-                return "After1204";
-            default:
-                return "";
-        }
+        return novel.NovelName;
     }
 
     // 特定条件で再生するADV
