@@ -16,9 +16,9 @@ public class ContinueStart : EditorWindow
         window.Show();
     }
 
-    DateData _Date = new DateData();
-    PlayerCharaData _Player = new PlayerCharaData();
-    TargetCharaData _Target = new TargetCharaData();
+    DateData _Date;
+    PlayerCharaData _Player;
+    TargetCharaData _Target;
 
     List<IDataModel> _DataModelList
     {
@@ -40,11 +40,15 @@ public class ContinueStart : EditorWindow
         // --------------------
         // セーブデータを読み取る
         // --------------------
-        if(!this._IsInit)
+        if(this._Date == null)
         {
             this._IsInit = true;
 
             var saveData = DataManager.GetSaveData();
+
+            this._Date = new DateData();
+            this._Player = new PlayerCharaData();
+            this._Target = new TargetCharaData();
 
             // データのロード
             foreach(var iData in this._DataModelList)
