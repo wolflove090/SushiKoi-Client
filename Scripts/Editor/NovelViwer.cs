@@ -15,6 +15,7 @@ public class NovelViwer : EditorWindow
 
     NovelData _BeforeNovelData;
     NovelData _AfterNovelData;
+    EpisodeNovelData _MagrouNovelData;
 
     void OnGUI()
     {
@@ -40,6 +41,16 @@ public class NovelViwer : EditorWindow
             {
                 var data = mstAfterNovels[i];
                 this._AfterNovelData.NovelViewDatas[i] = new NovelViewData(data);
+            }
+
+            // コマンド後 ノベルマスタの取得
+            var mstEpisodeNovels = MasterUtil.LoadAll<MagrouEpisodeNovelSchema>("MasterData/magrou_episode_novel");
+            this._MagrouNovelData = new EpisodeNovelData();
+            this._MagrouNovelData.NovelViewDatas = new EpisodeNovelViewData[mstEpisodeNovels.Length];
+            for(int i = 0; i < mstEpisodeNovels.Length; i++)
+            {
+                var data = mstEpisodeNovels[i];
+                this._MagrouNovelData.NovelViewDatas[i] = new EpisodeNovelViewData(data);
             }
         }
 
@@ -112,6 +123,55 @@ public class NovelViwer : EditorWindow
                 }
             }
         }
+
+        // --------------------
+        // まぐろうエピソード
+        // --------------------
+        color = GUI.color;
+        GUI.color = Color.cyan;
+        this._MagrouNovelData.ShowNovels = EditorGUILayout.Foldout(this._MagrouNovelData.ShowNovels, "まぐろうエピソード", true);
+        GUI.color = color;
+
+        if(this._MagrouNovelData.ShowNovels)
+        {
+            using (var scroll = new EditorGUILayout.ScrollViewScope(this._MagrouNovelData.ScrollPos, "box"))
+            {
+                this._MagrouNovelData.ScrollPos = scroll.scrollPosition;
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("再生タイミング", GUILayout.Width(100));
+                    EditorGUILayout.LabelField("説明", GUILayout.Width(200));
+                    EditorGUILayout.LabelField("ファイル", GUILayout.Width(200));
+                }
+
+                // ノベルデータ表示
+                for(int i = 0; i < this._MagrouNovelData.NovelViewDatas.Length; i++)
+                {
+                    var novel = this._MagrouNovelData.NovelViewDatas[i];
+
+                    using(new EditorGUILayout.VerticalScope("box"))
+                    {
+                        using(new EditorGUILayout.HorizontalScope())
+                        {
+                            EditorGUILayout.LabelField($"{novel.Month}月 / {novel.Week}週", GUILayout.Width(100));
+                            EditorGUILayout.LabelField(novel.Description, GUILayout.Width(200));
+                            EditorGUILayout.ObjectField(novel.NovelFile, typeof(TextAsset), GUILayout.Width(200));
+                        }
+
+                        using (new EditorGUILayout.HorizontalScope())
+                        {
+                            EditorGUILayout.LabelField($"信頼度：{novel.Likability}", GUILayout.Width(80));
+                            EditorGUILayout.LabelField($"学力：{novel.Edu}", GUILayout.Width(80));
+                            EditorGUILayout.LabelField($"運動力：{novel.Str}", GUILayout.Width(80));
+                            EditorGUILayout.LabelField($"シャリ力：{novel.RicePower}", GUILayout.Width(80));
+                        }
+                    }
+                    
+                    EditorGUILayout.Space();
+                }
+            }
+        }
     }
 
     // --------------------
@@ -153,4 +213,42 @@ public class NovelViwer : EditorWindow
         }
     }
 
+    // --------------------
+    // ノベル表示用の構造体クラス
+    // --------------------
+    class EpisodeNovelData
+    {
+        public EpisodeNovelViewData[] NovelViewDatas;
+        public Vector2 ScrollPos;
+        public bool ShowNovels;
+    }
+
+    // --------------------
+    // 表示用ノベルデータ
+    // --------------------
+    class EpisodeNovelViewData
+    {
+        public int Month;
+        public int Week;
+        public int Likability;
+        public int Edu;
+        public int Str;
+        public int RicePower;
+
+        public UnityEngine.Object NovelFile;
+        public string Description;
+
+        public EpisodeNovelViewData(MagrouEpisodeNovelSchema data)
+        {
+            this.Month = data.Month;
+            this.Week = data.Week;
+            this.Likability = data.Likability;
+            this.Edu = data.Edu;
+            this.Str = data.Str;
+            this.RicePower = data.RicePower;
+            this.Description = data.Description;
+
+            this.NovelFile = Resources.Load($"NovelScripts/EpisodeMagrou/{data.NovelName}");
+        }
+    }
 }

@@ -67,7 +67,6 @@ public class MasterUtil
             foreach(var field in fieldInfos)
             {
                 Type fieldType = field.FieldType;
-                Debug.Log(fieldType);
                 var columnName = field.GetCustomAttribute<CsvColumnAtrribute>().Name;
                 int index = columnIndex[columnName];
                 var value = colums[index];
