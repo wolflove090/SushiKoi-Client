@@ -13,6 +13,8 @@ public class NovelViwer : EditorWindow
         window.Show();
     }
 
+    Vector2 _ScrollPos;
+
     NovelData _BeforeNovelData;
     NovelData _AfterNovelData;
     EpisodeNovelData _MagrouNovelData;
@@ -54,20 +56,20 @@ public class NovelViwer : EditorWindow
             }
         }
 
-        // --------------------
-        // コマンド前ADV
-        // --------------------
-        var color = GUI.color;
-        GUI.color = Color.cyan;
-        this._BeforeNovelData.ShowNovels = EditorGUILayout.Foldout(this._BeforeNovelData.ShowNovels, "コマンド前ノベル", true);
-        GUI.color = color;
-
-        if(this._BeforeNovelData.ShowNovels)
+        using (var scroll = new EditorGUILayout.ScrollViewScope(this._ScrollPos, "box"))
         {
-            using (var scroll = new EditorGUILayout.ScrollViewScope(this._BeforeNovelData.ScrollPos, "box"))
-            {
-                this._BeforeNovelData.ScrollPos = scroll.scrollPosition;
+            this._ScrollPos = scroll.scrollPosition;
 
+            // --------------------
+            // コマンド前ADV
+            // --------------------
+            var color = GUI.color;
+            GUI.color = Color.cyan;
+            this._BeforeNovelData.ShowNovels = EditorGUILayout.Foldout(this._BeforeNovelData.ShowNovels, "コマンド前ノベル", true);
+            GUI.color = color;
+
+            if(this._BeforeNovelData.ShowNovels)
+            {
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("再生タイミング", GUILayout.Width(100));
@@ -83,26 +85,21 @@ public class NovelViwer : EditorWindow
                         var novel = this._BeforeNovelData.NovelViewDatas[i];
                         EditorGUILayout.LabelField($"{novel.Month}月 / {novel.Week}週", GUILayout.Width(100));
                         EditorGUILayout.LabelField(novel.Description, GUILayout.Width(200));
-                        EditorGUILayout.ObjectField(novel.NovelFile, typeof(TextAsset), GUILayout.Width(200));
+                        EditorGUILayout.ObjectField(novel.NovelFile, typeof(TextAsset), false, GUILayout.Width(200));
                     }
                 }
             }
-        }
 
-        // --------------------
-        // コマンド後ADV
-        // --------------------
-        color = GUI.color;
-        GUI.color = Color.cyan;
-        this._AfterNovelData.ShowNovels = EditorGUILayout.Foldout(this._AfterNovelData.ShowNovels, "コマンド後ノベル", true);
-        GUI.color = color;
+            // --------------------
+            // コマンド後ADV
+            // --------------------
+            color = GUI.color;
+            GUI.color = Color.cyan;
+            this._AfterNovelData.ShowNovels = EditorGUILayout.Foldout(this._AfterNovelData.ShowNovels, "コマンド後ノベル", true);
+            GUI.color = color;
 
-        if(this._AfterNovelData.ShowNovels)
-        {
-            using (var scroll = new EditorGUILayout.ScrollViewScope(this._AfterNovelData.ScrollPos, "box"))
+            if(this._AfterNovelData.ShowNovels)
             {
-                this._AfterNovelData.ScrollPos = scroll.scrollPosition;
-
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("再生タイミング", GUILayout.Width(100));
@@ -118,23 +115,20 @@ public class NovelViwer : EditorWindow
                         var novel = this._AfterNovelData.NovelViewDatas[i];
                         EditorGUILayout.LabelField($"{novel.Month}月 / {novel.Week}週", GUILayout.Width(100));
                         EditorGUILayout.LabelField(novel.Description, GUILayout.Width(200));
-                        EditorGUILayout.ObjectField(novel.NovelFile, typeof(TextAsset), GUILayout.Width(200));
+                        EditorGUILayout.ObjectField(novel.NovelFile, typeof(TextAsset), false, GUILayout.Width(200));
                     }
                 }
             }
-        }
 
-        // --------------------
-        // まぐろうエピソード
-        // --------------------
-        color = GUI.color;
-        GUI.color = Color.cyan;
-        this._MagrouNovelData.ShowNovels = EditorGUILayout.Foldout(this._MagrouNovelData.ShowNovels, "まぐろうエピソード", true);
-        GUI.color = color;
+            // --------------------
+            // まぐろうエピソード
+            // --------------------
+            color = GUI.color;
+            GUI.color = Color.cyan;
+            this._MagrouNovelData.ShowNovels = EditorGUILayout.Foldout(this._MagrouNovelData.ShowNovels, "まぐろうエピソード", true);
+            GUI.color = color;
 
-        if(this._MagrouNovelData.ShowNovels)
-        {
-            using (var scroll = new EditorGUILayout.ScrollViewScope(this._MagrouNovelData.ScrollPos, "box"))
+            if(this._MagrouNovelData.ShowNovels)
             {
                 this._MagrouNovelData.ScrollPos = scroll.scrollPosition;
 
@@ -156,7 +150,7 @@ public class NovelViwer : EditorWindow
                         {
                             EditorGUILayout.LabelField($"{novel.Month}月 / {novel.Week}週", GUILayout.Width(100));
                             EditorGUILayout.LabelField(novel.Description, GUILayout.Width(200));
-                            EditorGUILayout.ObjectField(novel.NovelFile, typeof(TextAsset), GUILayout.Width(200));
+                            EditorGUILayout.ObjectField(novel.NovelFile, typeof(TextAsset), false, GUILayout.Width(200));
                         }
 
                         using (new EditorGUILayout.HorizontalScope())
@@ -180,7 +174,6 @@ public class NovelViwer : EditorWindow
     class NovelData
     {
         public NovelViewData[] NovelViewDatas;
-        public Vector2 ScrollPos;
         public bool ShowNovels;
     }
 
