@@ -33,8 +33,6 @@ public class ContinueStart : EditorWindow
         }
     }
 
-    bool _IsInit;
-
     void OnGUI()
     {
         // --------------------
@@ -42,8 +40,6 @@ public class ContinueStart : EditorWindow
         // --------------------
         if(this._Date == null)
         {
-            this._IsInit = true;
-
             var saveData = DataManager.GetSaveData();
 
             this._Date = new DateData();
@@ -69,7 +65,7 @@ public class ContinueStart : EditorWindow
             var icon = EditorGUIUtility.IconContent("d_Refresh");
             if(GUILayout.Button(icon, GUILayout.Width(50)))
             {
-                this._IsInit = false;
+                this._Date = null;
             }
         }
 
