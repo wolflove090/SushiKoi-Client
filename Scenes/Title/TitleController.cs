@@ -15,6 +15,9 @@ public class TitleController : ControllerBase<TitleViewModel>
         // データマネージャー初期化
         DataManager.Init();
 
+        // コンフィグマネージャー初期化
+        ConfigManager.Init();
+
         // サウンドマネージャー初期化
         SoundManager.Init();
 

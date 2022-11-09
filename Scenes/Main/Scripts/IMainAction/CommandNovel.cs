@@ -80,6 +80,7 @@ public class CommandAction
     {
         var result = new List<CommandAction>();
 
+
         // 休む
         result.Add(new CommandAction()
         {
@@ -87,7 +88,13 @@ public class CommandAction
             Action = (onComplete, actionController) => 
             {
                 var player = DataManager.GetPlayerChara();
-                player.Hp.Add(50);
+
+                // 設定値を加算
+                var config = ConfigManager.GetCommandConfig();
+                foreach(var add in config.Rest.AddValue)
+                {
+                    player.AddParam(add.TargetType, add.Value);
+                }
 
                 // アクション演出の実行  
                 actionController.ExternalStart(new CommandActionLinker()
@@ -96,8 +103,6 @@ public class CommandAction
                     IsClear = false,
                     OnComplete = onComplete,
                 });
-
-                // NovelUtil.StartNovel("RestCommand", onComplete);
             },
         });
 
@@ -107,16 +112,24 @@ public class CommandAction
             CommandName = "勉強",
             Action = (onComplete,actionController) => 
             {
+                var config = ConfigManager.GetCommandConfig();
+
                 // 成功判断
                 int sucessRate = 100;
                 bool isSucess = Random.Range(1, 101) <= sucessRate;
 
                 var player = DataManager.GetPlayerChara();
-                player.Hp.Add(-10);
+                player.Hp.Add(-config.Study.NeedHp);
 
                 // 成功した時だけ上昇
                 if(isSucess)
-                   player.Edu.Add(10);
+                {
+                    // 設定値を加算
+                    foreach(var add in config.Study.AddValue)
+                    {
+                        player.AddParam(add.TargetType, add.Value);
+                    }
+                }
 
                 // アクション演出の実行  
                 actionController.ExternalStart(new CommandActionLinker()
@@ -125,7 +138,6 @@ public class CommandAction
                     IsClear = isSucess,
                     OnComplete = onComplete,
                 });
-                //NovelUtil.StartNovel("StudyCommand", onComplete);
             },
         });
 
@@ -135,16 +147,24 @@ public class CommandAction
             CommandName = "部活",
             Action = (onComplete, actionController) => 
             {
+                var config = ConfigManager.GetCommandConfig();
+
                 // 成功判断
                 int sucessRate = 100;
                 bool isSucess = Random.Range(1, 101) <= sucessRate;
 
                 var player = DataManager.GetPlayerChara();
-                player.Hp.Add(-10);
+                player.Hp.Add(-config.Club.NeedHp);
 
                 // 成功した時だけ上昇
                 if(isSucess)
-                    player.Str.Add(10);
+                {
+                    // 設定値を加算
+                    foreach(var add in config.Club.AddValue)
+                    {
+                        player.AddParam(add.TargetType, add.Value);
+                    }
+                }
 
                 // アクション演出の実行  
                 actionController.ExternalStart(new CommandActionLinker()
@@ -153,7 +173,6 @@ public class CommandAction
                     IsClear = isSucess,
                     OnComplete = onComplete,
                 });
-                //NovelUtil.StartNovel("ClubCommand", onComplete);
             },
         });
 
@@ -163,16 +182,24 @@ public class CommandAction
             CommandName = "バイト",
             Action = (onComplete, actionController) => 
             {
+                var config = ConfigManager.GetCommandConfig();
+
                 // 成功判断
                 int sucessRate = 100;
                 bool isSucess = Random.Range(1, 101) <= sucessRate;
 
                 var player = DataManager.GetPlayerChara();
-                player.Hp.Add(-10);
+                player.Hp.Add(- config.Job.NeedHp);
 
                 // 成功した時だけ上昇
                 if(isSucess)
-                    player.Money.Add(100);
+                {
+                    // 設定値を加算
+                    foreach(var add in config.Job.AddValue)
+                    {
+                        player.AddParam(add.TargetType, add.Value);
+                    }
+                }
 
                 // アクション演出の実行  
                 actionController.ExternalStart(new CommandActionLinker()
@@ -181,7 +208,6 @@ public class CommandAction
                     IsClear = isSucess,
                     OnComplete = onComplete,
                 });
-                //NovelUtil.StartNovel("WorkCommand", onComplete);
             },            
 
         });
@@ -213,7 +239,6 @@ public class CommandAction
                     IsClear = isSucess,
                     OnComplete = onComplete,
                 });
-                //NovelUtil.StartNovel("WorkCommand", onComplete);
             },            
 
         });
