@@ -66,6 +66,7 @@ public class ContinueStart : EditorWindow
             if(GUILayout.Button(icon, GUILayout.Width(50)))
             {
                 this._Date = null;
+                return;
             }
         }
 
