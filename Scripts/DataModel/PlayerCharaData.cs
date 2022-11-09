@@ -19,6 +19,16 @@ public class PlayerCharaData : IDataModel
         public int FreshnessValue;
     }
 
+    public enum ParamType
+    {
+        Hp = 1,
+        Edu = 2,
+        Str = 3,
+        RicePower = 4,
+        Money = 5,
+        Freshness = 6,
+    }
+
     public IParam Hp = new Hp(); // 体力,ストレス
     public IParam Edu = new Edu(); // 学力
     public IParam Str = new Str(); // 筋力,運動
@@ -28,6 +38,49 @@ public class PlayerCharaData : IDataModel
 
     public IParam Freshness = new Freshness(); // 鮮度
 
+    // --------------------
+    // enumから値の加算
+    // --------------------
+    public void AddParam(PlayerCharaData.ParamType type, int value)
+    {
+        switch(type)
+        {
+            case PlayerCharaData.ParamType.Hp:
+            {
+                this.Hp.Add(value);
+                break;
+            }   
+
+            case PlayerCharaData.ParamType.Edu:
+            {
+                this.Edu.Add(value);
+                break;
+            }   
+                        
+            case PlayerCharaData.ParamType.Str:
+            {
+                this.Str.Add(value);
+                break;
+            }   
+            case PlayerCharaData.ParamType.RicePower:
+            {
+                this.RicePower.Add(value);
+                break;
+            }   
+            
+            case PlayerCharaData.ParamType.Money:
+            {
+                this.Money.Add(value);
+                break;
+            }   
+            
+            case PlayerCharaData.ParamType.Freshness:
+            {
+                this.Freshness.Add(value);
+                break;
+            }   
+        }
+    }
 
     // --------------------
     // Jsonに変換
