@@ -41,6 +41,6 @@ public class ConfigManager
         if(_Singleton == null)
             throw new System.Exception("シングルトン未作成");
 
-        _Singleton._CommandConfig = Resources.Load<CommandConfig>("CommandConfig");
+        _Singleton._CommandConfig = Resources.Load<CommandConfig>("Config/CommandConfig");
     }
 }
