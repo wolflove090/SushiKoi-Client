@@ -5,7 +5,7 @@ using UnityEngine;
 // --------------------
 // コマンドコンフィグ
 // --------------------
-[CreateAssetMenu(fileName = "Data", menuName = "すし恋/CommandData")]
+[CreateAssetMenu(fileName = "CommandConfig", menuName = "すし恋/CommandConfig")]
 public class CommandConfig : ScriptableObject
 {
     public CommandStruct[] Commands;
