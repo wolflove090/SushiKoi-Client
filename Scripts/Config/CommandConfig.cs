@@ -8,8 +8,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CommandConfig", menuName = "すし恋/CommandConfig")]
 public class CommandConfig : ScriptableObject
 {
-    public CommandStruct[] Commands;
-
     public CommandStruct Rest;
     public CommandStruct Study;
     public CommandStruct Club;
@@ -35,5 +33,3 @@ public class CommandValue
     public PlayerCharaData.ParamType TargetType;
     public int Value;
 }
-
-
