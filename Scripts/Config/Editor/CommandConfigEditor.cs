@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Supyrb;
 
 [CustomEditor(typeof(CommandConfig))]
 public class CommandDataEditor : Editor
