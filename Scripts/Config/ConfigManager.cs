@@ -7,6 +7,7 @@ public class ConfigManager
     static ConfigManager _Singleton;
 
     CommandConfig _CommandConfig;
+    FreshnessConfig _FreshnessConfig;
 
     // --------------------
     // 初期化処理
@@ -20,6 +21,7 @@ public class ConfigManager
 
         // コンフィグデータの読み込み
         ConfigManager.LoadCommandConfig();
+        ConfigManager.LoadFreshnessConfig();
     }
 
     // --------------------
@@ -34,7 +36,18 @@ public class ConfigManager
     }
 
     // --------------------
-    // コマンドデータロード
+    // 鮮度コンフィグ
+    // --------------------
+    public static FreshnessConfig GetFreshnessConfig()
+    {
+        if(_Singleton == null)
+            throw new System.Exception("シングルトン未作成");
+
+        return _Singleton._FreshnessConfig;
+    }
+
+    // --------------------
+    // コマンドコンフィグロード
     // --------------------
     public static void LoadCommandConfig()
     {
@@ -42,5 +55,16 @@ public class ConfigManager
             throw new System.Exception("シングルトン未作成");
 
         _Singleton._CommandConfig = Resources.Load<CommandConfig>("Config/CommandConfig");
+    }
+
+    // --------------------
+    // 鮮度コンフィグロード
+    // --------------------
+    public static void LoadFreshnessConfig()
+    {
+        if(_Singleton == null)
+            throw new System.Exception("シングルトン未作成");
+
+        _Singleton._FreshnessConfig = Resources.Load<FreshnessConfig>("Config/FreshnessConfig");
     }
 }

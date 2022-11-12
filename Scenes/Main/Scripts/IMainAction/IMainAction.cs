@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 // --------------------
 // メインフローアクション用インターフェース
@@ -46,13 +47,14 @@ public class UpdatePlayerData : IMainAction
         Debug.Log("プレイヤーデータの定期更新");
         var player = DataManager.GetPlayerChara();
         var date = DataManager.GetDate();
+        var config = ConfigManager.GetFreshnessConfig();
 
-        int dec = 2;
-        // 8月と12月は減少量が多くなる
-        if(date.Month == 8 || date.Month == 12)
-        {
-            dec = 10;
-        }
+        int dec = config.DefaultDecValue;
+
+        // カスタム変化量があればそっちを適用
+        var custom = config.CustomDecValue.FirstOrDefault(value => value.Month == date.Month);
+        if(custom != null)
+            dec = custom.DecValue;
 
         player.Freshness.Add(dec * -1);
         onComplete();
