@@ -113,19 +113,20 @@ public class CommandAction
             Action = (onComplete,actionController) => 
             {
                 var config = ConfigManager.GetCommandConfig();
+                var command = config.Study;
 
                 // 成功判断
-                int sucessRate = 100;
+                int sucessRate = command.SuccessRate;
                 bool isSucess = Random.Range(1, 101) <= sucessRate;
 
                 var player = DataManager.GetPlayerChara();
-                player.Hp.Add(-config.Study.NeedHp);
+                player.Hp.Add(-command.NeedHp);
 
                 // 成功した時だけ上昇
                 if(isSucess)
                 {
                     // 設定値を加算
-                    foreach(var add in config.Study.AddValue)
+                    foreach(var add in command.AddValue)
                     {
                         player.AddParam(add.TargetType, add.Value);
                     }
@@ -148,19 +149,20 @@ public class CommandAction
             Action = (onComplete, actionController) => 
             {
                 var config = ConfigManager.GetCommandConfig();
+                var command = config.Club;
 
                 // 成功判断
-                int sucessRate = 100;
+                int sucessRate = command.SuccessRate;
                 bool isSucess = Random.Range(1, 101) <= sucessRate;
 
                 var player = DataManager.GetPlayerChara();
-                player.Hp.Add(-config.Club.NeedHp);
+                player.Hp.Add(-command.NeedHp);
 
                 // 成功した時だけ上昇
                 if(isSucess)
                 {
                     // 設定値を加算
-                    foreach(var add in config.Club.AddValue)
+                    foreach(var add in command.AddValue)
                     {
                         player.AddParam(add.TargetType, add.Value);
                     }
@@ -183,19 +185,20 @@ public class CommandAction
             Action = (onComplete, actionController) => 
             {
                 var config = ConfigManager.GetCommandConfig();
+                var command = config.Job;
 
                 // 成功判断
-                int sucessRate = 100;
+                int sucessRate = command.SuccessRate;
                 bool isSucess = Random.Range(1, 101) <= sucessRate;
 
                 var player = DataManager.GetPlayerChara();
-                player.Hp.Add(- config.Job.NeedHp);
+                player.Hp.Add(- command.NeedHp);
 
                 // 成功した時だけ上昇
                 if(isSucess)
                 {
                     // 設定値を加算
-                    foreach(var add in config.Job.AddValue)
+                    foreach(var add in command.AddValue)
                     {
                         player.AddParam(add.TargetType, add.Value);
                     }

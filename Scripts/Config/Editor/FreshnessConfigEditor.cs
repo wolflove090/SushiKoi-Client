@@ -21,39 +21,55 @@ public class FreshnessConfigEditor : Editor
         Color buttonColor = GUI.skin.button.normal.textColor;
 
         // ========== 通常の減算値
-        EditorGUILayout.LabelField("通常の減算値");
-        EditorGUILayout.PropertyField(this._DefaultValue);
+        using(new EditorGUILayout.VerticalScope("box"))
+        {
+            EditorGUILayout.LabelField("通常の減算値");
+            EditorGUILayout.PropertyField(this._DefaultValue);
+
+        }
 
         EditorGUILayout.Space();
 
         // ========== カスタム減算値
-        EditorGUILayout.LabelField("カスタム減算値");
-        EditorGUILayout.HelpBox("月ごとに鮮度の減算値を設定できます。", MessageType.Info);
-
-        for(int i = 0; i < this._CustomValue.arraySize; i++)
+        using (new EditorGUILayout.VerticalScope("box"))
         {
-            var customValue = this._CustomValue.GetArrayElementAtIndex(i);
-            var month = customValue.FindPropertyRelative("Month");
-            var decValue = customValue.FindPropertyRelative("DecValue");
+            EditorGUILayout.LabelField("カスタム減算値");
+            EditorGUILayout.HelpBox("月ごとに鮮度の減算値を設定できます。", MessageType.Info);
 
-            EditorGUILayout.PropertyField(month);
-            EditorGUILayout.PropertyField(decValue);
-
-            GUI.skin.button.normal.textColor = Color.red;
-            if(GUILayout.Button("項目削除"))
+            for(int i = 0; i < this._CustomValue.arraySize; i++)
             {
-                this._CustomValue.DeleteArrayElementAtIndex(i);
+                var customValue = this._CustomValue.GetArrayElementAtIndex(i);
+                var month = customValue.FindPropertyRelative("Month");
+                var decValue = customValue.FindPropertyRelative("DecValue");
+
+                EditorGUILayout.PropertyField(month);
+                EditorGUILayout.PropertyField(decValue);
+
+                GUI.skin.button.normal.textColor = Color.red;
+                if(GUILayout.Button("項目削除"))
+                {
+                    this._CustomValue.DeleteArrayElementAtIndex(i);
+                }
+                GUI.skin.button.normal.textColor = buttonColor;
+            }
+
+            GUI.skin.button.normal.textColor = Color.green;
+
+            if(GUILayout.Button("項目追加"))
+            {
+                this._CustomValue.InsertArrayElementAtIndex(this._CustomValue.arraySize);
             }
             GUI.skin.button.normal.textColor = buttonColor;
         }
 
-        GUI.skin.button.normal.textColor = Color.green;
-
-        if(GUILayout.Button("項目追加"))
+        // ========== ホットリロードボタン
+        if(EditorApplication.isPlaying)
         {
-            this._CustomValue.InsertArrayElementAtIndex(this._CustomValue.arraySize);
+            if(GUILayout.Button("ゲームに設定を反映"))
+            {
+                ConfigManager.LoadFreshnessConfig();
+            }
         }
-        GUI.skin.button.normal.textColor = buttonColor;
 
         serializedObject.ApplyModifiedProperties();
     }

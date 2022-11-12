@@ -21,6 +21,7 @@ public class CommandConfig : ScriptableObject
 public class CommandStruct
 {
     public int NeedHp;
+    public int SuccessRate;
     public CommandValue[] AddValue;
 }
 

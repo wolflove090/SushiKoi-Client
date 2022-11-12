@@ -64,6 +64,7 @@ public class CommandDataEditor : Editor
     void _ShowCommandStruct(SerializedProperty commandProperty)
     {
         var needHp = commandProperty.FindPropertyRelative("NeedHp");
+        var successRate = commandProperty.FindPropertyRelative("SuccessRate");
         var addValues = commandProperty.FindPropertyRelative("AddValue");
         Color buttonColor = GUI.skin.button.normal.textColor;
 
@@ -72,6 +73,12 @@ public class CommandDataEditor : Editor
             // 必要HP
             EditorGUILayout.LabelField("必要ストレス値");
             EditorGUILayout.PropertyField(needHp);
+
+            EditorGUILayout.Space();
+
+            // 成功率
+            EditorGUILayout.LabelField("成功率");
+            EditorGUILayout.PropertyField(successRate);
 
             EditorGUILayout.Space();
 
