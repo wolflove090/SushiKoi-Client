@@ -33,6 +33,9 @@ public class ContinueStart : EditorWindow
         }
     }
 
+    bool _RestartContinue;
+    bool _RestartTitle;
+
     void OnGUI()
     {
         // --------------------
@@ -174,14 +177,31 @@ public class ContinueStart : EditorWindow
 
         EditorGUILayout.Space();
 
-        if(GUILayout.Button("上記設定でゲーム実行"))
+        if(GUILayout.Button("上記設定でゲーム実行") || this._RestartContinue)
         {
             this.PlayContinue();
+        }
+
+        EditorGUILayout.Space();
+
+        EditorGUILayout.HelpBox("タイトルをゲームで確認したい時用。設定は保存されない。", MessageType.Info);
+        if(GUILayout.Button("タイトルまででゲーム実行") || this._RestartTitle)
+        {
+            this.PlayTitle();
         }
     }
 
     void PlayContinue()
     {
+        // プレイ中なら再起動
+        if(EditorApplication.isPlaying)
+        {
+            EditorApplication.ExecuteMenuItem("Edit/Play");
+            this._RestartContinue = true;
+            return;
+        }    
+
+        this._RestartContinue = false;
         AssetDatabase.Refresh();
 
         List<IDataModel> dataModelList = new List<IDataModel>();
@@ -201,7 +221,29 @@ public class ContinueStart : EditorWindow
         DataManager.SaveEdit(json);
 
         // 続きからプレイ
-        PlayerPrefs.SetInt(AutoPlay.KEY, 2);
+        // 実行自体はAutoPlayExecクラス
+        int type = (int)AutoPlay.PlayType.Continue;
+        PlayerPrefs.SetInt(AutoPlay.KEY, type);
+        EditorApplication.ExecuteMenuItem("Edit/Play");
+    }
+
+    void PlayTitle()
+    {
+        // プレイ中なら再起動
+        if(EditorApplication.isPlaying)
+        {
+            EditorApplication.ExecuteMenuItem("Edit/Play");
+            this._RestartTitle = true;
+            return;
+        }    
+        this._RestartTitle = false;
+
+        AssetDatabase.Refresh();
+
+        // タイトルプレイ
+        // 実行自体はAutoPlayExecクラス
+        int type = (int)AutoPlay.PlayType.Title;
+        PlayerPrefs.SetInt(AutoPlay.KEY, type);
         EditorApplication.ExecuteMenuItem("Edit/Play");
     }
 }

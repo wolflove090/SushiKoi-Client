@@ -18,6 +18,7 @@ public class AutoPlay : Editor
         None = 0,
         Beginning = 1,
         Continue = 2,
+        Title = 3,
     }
 
     [MenuItem("すし恋/AutoPlay")]
@@ -71,7 +72,9 @@ public class AutoPlayExec : MonoBehaviour
             case AutoPlay.PlayType.Continue:
                 this.ExecAutoPlayContinue().Forget();
                 break;
-
+            // タイトルは特に処理なし
+            case AutoPlay.PlayType.Title:
+                break;
         }
     }
 
