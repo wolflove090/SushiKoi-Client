@@ -43,6 +43,7 @@ public static class CustomToolbar
 
     private static void OnGUI()
     {
+        // ========== リフレッシュボタン
         bool isAutoRefresh = EditorPrefs.GetBool("kAutoRefresh");
         if(isAutoRefresh)
             return;
