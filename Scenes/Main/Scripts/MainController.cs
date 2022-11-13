@@ -13,13 +13,6 @@ public class MainController : ControllerBase<MainViewModel>
     // --------------------
     protected override void _OnStart()
     {
-        // ノベルモード切り替え
-        //var toGameCommand = new SwitchToGameMode();
-        //toGameCommand.ExecuteAsync().Forget();
-
-        // データマネージャー初期化
-        //DataManager.Init();
-
         // メインフローのアクションを設定
         // 設定した順番で繰り返す
         this._MainActionList.Add(new ChoiceMakeUp());
