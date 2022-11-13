@@ -182,6 +182,8 @@ public class ContinueStart : EditorWindow
 
     void PlayContinue()
     {
+        AssetDatabase.Refresh();
+
         List<IDataModel> dataModelList = new List<IDataModel>();
         var newData = new SaveData();
 
