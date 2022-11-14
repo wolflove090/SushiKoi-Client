@@ -192,7 +192,7 @@ PrefabInstance:
     - target: {fileID: 5472117097902895266, guid: 7ca7a6597b6c1489eb1a8e347bc662ea,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 101
+      value: 106
       objectReference: {fileID: 0}
     - target: {fileID: 5472117097902895266, guid: 7ca7a6597b6c1489eb1a8e347bc662ea,
         type: 3}
@@ -455,7 +455,7 @@ PrefabInstance:
     - target: {fileID: 5472117097902895266, guid: 7ca7a6597b6c1489eb1a8e347bc662ea,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 101
+      value: 106
       objectReference: {fileID: 0}
     - target: {fileID: 5472117097902895266, guid: 7ca7a6597b6c1489eb1a8e347bc662ea,
         type: 3}
@@ -587,7 +587,7 @@ MonoBehaviour:
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_ChildScaleHeight: 1
 --- !u!1 &1191053306
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,8 +647,7 @@ MonoBehaviour:
   m_text: "\u5236\u4F5C\uFF1A\u30C1\u30FC\u30E0\u30DA\u30F3\u30AE\u30F3"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 028273f4511c67f46bd8821ee82aa4cf, type: 2}
-  m_sharedMaterial: {fileID: 1589908760229004057, guid: 028273f4511c67f46bd8821ee82aa4cf,
-    type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: a26ed151ef68e7942b9744c0f122bc1d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1001,7 +1000,7 @@ PrefabInstance:
     - target: {fileID: 5472117097902895266, guid: 7ca7a6597b6c1489eb1a8e347bc662ea,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 101
+      value: 106
       objectReference: {fileID: 0}
     - target: {fileID: 5472117097902895266, guid: 7ca7a6597b6c1489eb1a8e347bc662ea,
         type: 3}
