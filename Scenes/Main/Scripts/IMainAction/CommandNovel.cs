@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Naninovel;
+using UnityEngine.UI;
 
 // --------------------
 // コマンド選択ADV
@@ -47,6 +48,11 @@ public class CommandNovel : IMainAction
             };
             button.Label = command.CommandName;
 
+            // コマンド背景
+            var buttonBack = button.transform.Find("Pos/Back");
+            var backImage = buttonBack.GetComponent<Image>();
+            backImage.sprite = Resources.Load<Sprite>(command.BackPath);
+
             this._CommandObjList.Add(obj.gameObject);
         }
         this._CommandButton.gameObject.SetActive(false);
@@ -70,7 +76,7 @@ public class CommandNovel : IMainAction
 public class CommandAction
 {
     public string CommandName;
-    //public string ScriptName;
+    public string BackPath;
     public System.Action<System.Action, CommandActionController> Action;
 
     public CommandActionController ActionController;
@@ -85,6 +91,7 @@ public class CommandAction
         result.Add(new CommandAction()
         {
             CommandName = "休む",
+            BackPath = "Images/CommandButton/btn_cmd_rest_off",
             Action = (onComplete, actionController) => 
             {
                 var player = DataManager.GetPlayerChara();
@@ -110,6 +117,7 @@ public class CommandAction
         result.Add(new CommandAction()
         {
             CommandName = "勉強",
+            BackPath = "Images/CommandButton/btn_cmd_study_off",
             Action = (onComplete,actionController) => 
             {
                 var config = ConfigManager.GetCommandConfig();
@@ -146,6 +154,7 @@ public class CommandAction
         result.Add(new CommandAction()
         {
             CommandName = "部活",
+            BackPath = "Images/CommandButton/btn_cmd_activity_off",
             Action = (onComplete, actionController) => 
             {
                 var config = ConfigManager.GetCommandConfig();
@@ -182,6 +191,7 @@ public class CommandAction
         result.Add(new CommandAction()
         {
             CommandName = "バイト",
+            BackPath = "Images/CommandButton/btn_cmd_job_off",
             Action = (onComplete, actionController) => 
             {
                 var config = ConfigManager.GetCommandConfig();
@@ -219,6 +229,7 @@ public class CommandAction
         result.Add(new CommandAction()
         {
             CommandName = "デート",
+            BackPath = "Images/CommandButton/btn_cmd_date_off",
             Action = (onComplete, actionController) => 
             {
                 // 成功判断
@@ -258,6 +269,7 @@ public class CommandAction
         result.Add(new CommandAction()
         {
             CommandName = "登校",
+            BackPath = "Images/CommandButton/btn_cmd_rest_off",
             Action = (onComplete, actionController) => NovelUtil.StartNovel("FirstSchool", onComplete),
         });
 
