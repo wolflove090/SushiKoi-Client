@@ -48,7 +48,10 @@ public static class CustomToolbar
         if(isAutoRefresh)
             return;
 
-        var rect = new Rect(580, 4, 30,  24);
+        float width = EditorGUIUtility.currentViewWidth;
+        width /= 2;
+        width -= 125;
+        var rect = new Rect(width, 4, 30,  22);
 
         if(GUI.Button(rect, ICON_REFRESH))
         {
