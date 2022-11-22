@@ -98,18 +98,10 @@ public class CommandAction
 
                 // 設定値を加算
                 var config = ConfigManager.GetCommandConfig();
-                foreach(var add in config.Rest.AddValue)
-                {
-                    player.AddParam(add.TargetType, add.Value);
-                }
+                var command = config.Rest;
 
-                // アクション演出の実行  
-                actionController.ExternalStart(new CommandActionLinker()
-                {
-                    ActionName = "休む",
-                    IsClear = false,
-                    OnComplete = onComplete,
-                });
+                // アクション実行
+                DefaultCommandAction(command, "休む", (onComplete, actionController));
             },
         });
 
@@ -123,30 +115,8 @@ public class CommandAction
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Study;
 
-                // 成功判断
-                int sucessRate = command.SuccessRate;
-                bool isSucess = Random.Range(1, 101) <= sucessRate;
-
-                var player = DataManager.GetPlayerChara();
-                player.Hp.Add(-command.NeedHp);
-
-                // 成功した時だけ上昇
-                if(isSucess)
-                {
-                    // 設定値を加算
-                    foreach(var add in command.AddValue)
-                    {
-                        player.AddParam(add.TargetType, add.Value);
-                    }
-                }
-
-                // アクション演出の実行  
-                actionController.ExternalStart(new CommandActionLinker()
-                {
-                    ActionName = "勉強",
-                    IsClear = isSucess,
-                    OnComplete = onComplete,
-                });
+                // アクション実行
+                DefaultCommandAction(command, "勉強", (onComplete, actionController));
             },
         });
 
@@ -160,30 +130,8 @@ public class CommandAction
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Club;
 
-                // 成功判断
-                int sucessRate = command.SuccessRate;
-                bool isSucess = Random.Range(1, 101) <= sucessRate;
-
-                var player = DataManager.GetPlayerChara();
-                player.Hp.Add(-command.NeedHp);
-
-                // 成功した時だけ上昇
-                if(isSucess)
-                {
-                    // 設定値を加算
-                    foreach(var add in command.AddValue)
-                    {
-                        player.AddParam(add.TargetType, add.Value);
-                    }
-                }
-
-                // アクション演出の実行  
-                actionController.ExternalStart(new CommandActionLinker()
-                {
-                    ActionName = "部活動",
-                    IsClear = isSucess,
-                    OnComplete = onComplete,
-                });
+                // アクション実行
+                DefaultCommandAction(command, "部活", (onComplete, actionController));
             },
         });
 
@@ -197,30 +145,8 @@ public class CommandAction
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Job;
 
-                // 成功判断
-                int sucessRate = command.SuccessRate;
-                bool isSucess = Random.Range(1, 101) <= sucessRate;
-
-                var player = DataManager.GetPlayerChara();
-                player.Hp.Add(- command.NeedHp);
-
-                // 成功した時だけ上昇
-                if(isSucess)
-                {
-                    // 設定値を加算
-                    foreach(var add in command.AddValue)
-                    {
-                        player.AddParam(add.TargetType, add.Value);
-                    }
-                }
-
-                // アクション演出の実行  
-                actionController.ExternalStart(new CommandActionLinker()
-                {
-                    ActionName = "アルバイト",
-                    IsClear = isSucess,
-                    OnComplete = onComplete,
-                });
+                // アクション実行
+                DefaultCommandAction(command, "バイト", (onComplete, actionController));
             },            
 
         });
@@ -257,6 +183,51 @@ public class CommandAction
 
         });
 
+        // おでかけ
+        result.Add(new CommandAction()
+        {
+            CommandName = "おでかけ",
+            BackPath = "Images/CommandButton/btn_cmd_job_off",
+            Action = (onComplete, actionController) => 
+            {
+                var config = ConfigManager.GetCommandConfig();
+                var command = config.Job;
+
+                // アクション実行
+                DefaultCommandAction(command, "おでかけ", (onComplete, actionController));
+            },            
+        });
+
+        // エステ
+        result.Add(new CommandAction()
+        {
+            CommandName = "エステ",
+            BackPath = "Images/CommandButton/btn_cmd_job_off",
+            Action = (onComplete, actionController) => 
+            {
+                var config = ConfigManager.GetCommandConfig();
+                var command = config.Job;
+
+                // アクション実行
+                DefaultCommandAction(command, "エステ", (onComplete, actionController));
+            },            
+        });
+
+        // 魅力
+        result.Add(new CommandAction()
+        {
+            CommandName = "魅力",
+            BackPath = "Images/CommandButton/btn_cmd_job_off",
+            Action = (onComplete, actionController) => 
+            {
+                var config = ConfigManager.GetCommandConfig();
+                var command = config.Job;
+
+                // アクション実行
+                DefaultCommandAction(command, "魅力", (onComplete, actionController));
+            },            
+        });
+
         return result.ToArray();
     }
 
@@ -274,5 +245,36 @@ public class CommandAction
         });
 
         return result.ToArray();
+    }
+
+    // デフォルトコマンド処理
+    // TODO 通常コマンドと特殊コマンドで実態を変えたい
+    static void DefaultCommandAction(CommandStruct command, string commandName, (System.Action onComplete, CommandActionController actionController) action)
+    {
+        // 成功判断
+        int sucessRate = command.SuccessRate;
+        bool isSucess = Random.Range(1, 101) <= sucessRate;
+
+        var player = DataManager.GetPlayerChara();
+        player.Hp.Add(- command.NeedHp);
+
+        // 成功した時だけ上昇
+        if(isSucess)
+        {
+            // 設定値を加算
+            foreach(var add in command.AddValue)
+            {
+                player.AddParam(add.TargetType, add.Value);
+            }
+        }
+
+        // アクション演出の実行  
+        action.actionController.ExternalStart(new CommandActionLinker()
+        {
+            ActionName = commandName,
+            IsClear = isSucess,
+            OnComplete = action.onComplete,
+        });
+
     }
 }
