@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// --------------------
+// コマンドアニメーション再生コントローラー
+// --------------------
 public class CommandActionController : ChildController<CommandActionViewModel, CommandActionLinker>
 {
     public void Init() 

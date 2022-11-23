@@ -45,6 +45,12 @@ public class StatusUpdate : IMainAction
 
             status.ValueLabel = value;
 
+            var icon = obj.transform.Find("Icon");
+            status.Icon = icon.gameObject;
+
+            var anim = obj.GetComponent<Animation>();
+            status.Anim = anim;
+
             // 描画更新
             status.Update();
 
@@ -61,6 +67,30 @@ public class StatusUpdate : IMainAction
             status.Update();
         }
     }
+
+    // ステータス更新アニメーション
+    public void PlayUpdateAnim(System.Action onComplete)
+    {
+        // すべてのアニメーション完了時にonCompleteを叩く
+        int count = 1;
+        System.Action complete = () => 
+        {
+            count--;
+
+            if(count <= 0)
+            {
+                onComplete();
+            }
+        };
+
+        foreach(var status in this._StatusList)
+        {
+            count++;
+            status.PlayUpdateAnim(complete);
+        }
+
+        complete();
+    }
 }
 
 // --------------------
@@ -70,14 +100,29 @@ public class StatusLabel
 {
     public string Name;
     public TextMeshProUGUI ValueLabel;
+    public GameObject Icon;
+    public Animation Anim;
 
     public IParam TargetParam;
+
 
     System.Func<int> _GetValue;
 
     public void Update() 
     {
         this.ValueLabel.text = this._GetValue().ToString();
+    }
+
+    // ステータス更新アニメーション
+    public void PlayUpdateAnim(System.Action onComplete)
+    {
+        this.Icon.SetActive(true);
+        this.Anim.Play("status_update", 
+        () => 
+        {
+            this.Icon.SetActive(false);
+            onComplete();
+        });
     }
 
     public static StatusLabel[] CreateStatusLabel()

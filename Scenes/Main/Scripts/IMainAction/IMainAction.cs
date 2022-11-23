@@ -56,7 +56,8 @@ public class UpdatePlayerData : IMainAction
         if(custom != null)
             dec = custom.DecValue;
 
-        player.Freshness.Add(dec * -1);
+        // TODO 各コマンドで減らしたいため一旦オミット
+        //player.Freshness.Add(dec * -1);
         onComplete();
     }
 }

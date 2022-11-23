@@ -16,12 +16,15 @@ public class CommandNovel : IMainAction
     Transform _CommandButtonRoot;
 
     CommandActionController _CommandAction;
+    StatusUpdate _StatusUpdate; // ステータスアニメーション再生用 // TODO アクションだけもらってもいい
 
-    public CommandNovel(ButtonBase commandButton, Transform commandButtonRoot, CommandActionController commandAction)
+    // TODO 引数が多すぎる CommandDelegateManager をもらうようにする
+    public CommandNovel(ButtonBase commandButton, Transform commandButtonRoot, CommandActionController commandAction, StatusUpdate statusUpdate)
     {
         this._CommandButton = commandButton;
         this._CommandButtonRoot = commandButtonRoot;
         this._CommandAction = commandAction;
+        this._StatusUpdate = statusUpdate;
 
         this._CommandAction.Init();
     }
@@ -44,7 +47,13 @@ public class CommandNovel : IMainAction
             var button = obj.GetComponent<ButtonBase>();
             button.OnClick = () => 
             {
-                command.Action(onComplete, this._CommandAction);
+                var actionManager = new CommandDelegateManager()
+                {
+                    CommandActionController = this._CommandAction,
+                    StatusUpdate = this._StatusUpdate,
+                    OnComplete = onComplete,
+                };
+                command.Action(actionManager);
             };
             button.Label = command.CommandName;
 
@@ -71,13 +80,30 @@ public class CommandNovel : IMainAction
 }
 
 // --------------------
+// コマンドに使用するアクション定義
+// --------------------
+public class CommandDelegateManager
+{
+    // コマンドアニメーション再生用
+    public CommandActionController CommandActionController; // 本来はアクションだけあればいい
+
+    // ステータス更新アニメーション
+    public StatusUpdate StatusUpdate;
+
+    // コマンド処理終わったら叩かれる
+    public System.Action OnComplete;
+
+}
+
+// --------------------
 // 各コマンドの定義作成
 // --------------------
 public class CommandAction
 {
     public string CommandName;
     public string BackPath;
-    public System.Action<System.Action, CommandActionController> Action;
+    //public System.Action<System.Action, CommandActionController> Action;
+    public System.Action<CommandDelegateManager> Action;
 
     public CommandActionController ActionController;
 
@@ -92,7 +118,7 @@ public class CommandAction
         {
             CommandName = "休む",
             BackPath = "Images/CommandButton/btn_cmd_rest_off",
-            Action = (onComplete, actionController) => 
+            Action = (actionManager) => 
             {
                 var player = DataManager.GetPlayerChara();
 
@@ -101,7 +127,7 @@ public class CommandAction
                 var command = config.Rest;
 
                 // アクション実行
-                DefaultCommandAction(command, "休む", (onComplete, actionController));
+                DefaultCommandAction(command, "休む", actionManager);
             },
         });
 
@@ -110,13 +136,13 @@ public class CommandAction
         {
             CommandName = "勉強",
             BackPath = "Images/CommandButton/btn_cmd_study_off",
-            Action = (onComplete,actionController) => 
+            Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Study;
 
                 // アクション実行
-                DefaultCommandAction(command, "勉強", (onComplete, actionController));
+                DefaultCommandAction(command, "勉強", actionManager);
             },
         });
 
@@ -125,13 +151,13 @@ public class CommandAction
         {
             CommandName = "部活",
             BackPath = "Images/CommandButton/btn_cmd_activity_off",
-            Action = (onComplete, actionController) => 
+            Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Club;
 
                 // アクション実行
-                DefaultCommandAction(command, "部活", (onComplete, actionController));
+                DefaultCommandAction(command, "部活", actionManager);
             },
         });
 
@@ -140,13 +166,13 @@ public class CommandAction
         {
             CommandName = "バイト",
             BackPath = "Images/CommandButton/btn_cmd_job_off",
-            Action = (onComplete, actionController) => 
+            Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Job;
 
                 // アクション実行
-                DefaultCommandAction(command, "バイト", (onComplete, actionController));
+                DefaultCommandAction(command, "バイト", actionManager);
             },            
 
         });
@@ -156,7 +182,7 @@ public class CommandAction
         {
             CommandName = "デート",
             BackPath = "Images/CommandButton/btn_cmd_date_off",
-            Action = (onComplete, actionController) => 
+            Action = (actionManager) => 
             {
                 // 成功判断
                 int sucessRate = 100;
@@ -173,11 +199,11 @@ public class CommandAction
                 }   
 
                 // アクション演出の実行  
-                actionController.ExternalStart(new CommandActionLinker()
+                actionManager.CommandActionController.ExternalStart(new CommandActionLinker()
                 {
                     ActionName = "デート",
                     IsClear = isSucess,
-                    OnComplete = onComplete,
+                    OnComplete = actionManager.OnComplete,
                 });
             },            
 
@@ -188,13 +214,13 @@ public class CommandAction
         {
             CommandName = "おでかけ",
             BackPath = "Images/CommandButton/btn_cmd_job_off",
-            Action = (onComplete, actionController) => 
+            Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.GoOut;
 
                 // アクション実行
-                DefaultCommandAction(command, "おでかけ", (onComplete, actionController));
+                DefaultCommandAction(command, "おでかけ", actionManager);
             },            
         });
 
@@ -203,13 +229,13 @@ public class CommandAction
         {
             CommandName = "エステ",
             BackPath = "Images/CommandButton/btn_cmd_job_off",
-            Action = (onComplete, actionController) => 
+            Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Esthetic;
 
                 // アクション実行
-                DefaultCommandAction(command, "エステ", (onComplete, actionController));
+                DefaultCommandAction(command, "エステ", actionManager);
             },            
         });
 
@@ -218,13 +244,13 @@ public class CommandAction
         {
             CommandName = "魅力",
             BackPath = "Images/CommandButton/btn_cmd_job_off",
-            Action = (onComplete, actionController) => 
+            Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.CharmUp;
 
                 // アクション実行
-                DefaultCommandAction(command, "魅力", (onComplete, actionController));
+                DefaultCommandAction(command, "魅力", actionManager);
             },            
         });
 
@@ -241,7 +267,7 @@ public class CommandAction
         {
             CommandName = "登校",
             BackPath = "Images/CommandButton/btn_cmd_rest_off",
-            Action = (onComplete, actionController) => NovelUtil.StartNovel("FirstSchool", onComplete),
+            Action = (actionManager) => NovelUtil.StartNovel("FirstSchool", actionManager.OnComplete),
         });
 
         return result.ToArray();
@@ -249,7 +275,7 @@ public class CommandAction
 
     // デフォルトコマンド処理
     // TODO 通常コマンドと特殊コマンドで実態を変えたい
-    static void DefaultCommandAction(CommandStruct command, string commandName, (System.Action onComplete, CommandActionController actionController) action)
+    static void DefaultCommandAction(CommandStruct command, string commandName, CommandDelegateManager actionManager)
     {
         // 成功判断
         int sucessRate = command.SuccessRate;
@@ -269,11 +295,15 @@ public class CommandAction
         }
 
         // アクション演出の実行  
-        action.actionController.ExternalStart(new CommandActionLinker()
+        actionManager.CommandActionController.ExternalStart(new CommandActionLinker()
         {
             ActionName = commandName,
             IsClear = isSucess,
-            OnComplete = action.onComplete,
+            OnComplete = () => 
+            {
+                // 増減アニメーション後に完了コールバックを叩く
+                actionManager.StatusUpdate.PlayUpdateAnim(actionManager.OnComplete);
+            },
         });
 
     }
