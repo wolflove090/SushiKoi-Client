@@ -15,18 +15,15 @@ public class CommandNovel : IMainAction
     ButtonBase _CommandButton;
     Transform _CommandButtonRoot;
 
-    CommandActionController _CommandAction;
-    StatusUpdate _StatusUpdate; // ステータスアニメーション再生用 // TODO アクションだけもらってもいい
+    CommandDelegateManager _ActionManager;
 
-    // TODO 引数が多すぎる CommandDelegateManager をもらうようにする
-    public CommandNovel(ButtonBase commandButton, Transform commandButtonRoot, CommandActionController commandAction, StatusUpdate statusUpdate)
+    public CommandNovel(ButtonBase commandButton, Transform commandButtonRoot, CommandDelegateManager actionManager)
     {
         this._CommandButton = commandButton;
         this._CommandButtonRoot = commandButtonRoot;
-        this._CommandAction = commandAction;
-        this._StatusUpdate = statusUpdate;
+        this._ActionManager = actionManager;
 
-        this._CommandAction.Init();
+        this._ActionManager.CommandActionController.Init();
     }
 
     void IMainAction.Play(System.Action onComplete)
@@ -47,13 +44,8 @@ public class CommandNovel : IMainAction
             var button = obj.GetComponent<ButtonBase>();
             button.OnClick = () => 
             {
-                var actionManager = new CommandDelegateManager()
-                {
-                    CommandActionController = this._CommandAction,
-                    StatusUpdate = this._StatusUpdate,
-                    OnComplete = onComplete,
-                };
-                command.Action(actionManager);
+                this._ActionManager.OnComplete = onComplete;
+                command.Action(this._ActionManager);
             };
             button.Label = command.CommandName;
 
@@ -85,9 +77,9 @@ public class CommandNovel : IMainAction
 public class CommandDelegateManager
 {
     // コマンドアニメーション再生用
-    public CommandActionController CommandActionController; // 本来はアクションだけあればいい
+    public CommandActionController CommandActionController;
 
-    // ステータス更新アニメーション
+    // ステータス更新アニメーション用
     public StatusUpdate StatusUpdate;
 
     // コマンド処理終わったら叩かれる
@@ -102,7 +94,6 @@ public class CommandAction
 {
     public string CommandName;
     public string BackPath;
-    //public System.Action<System.Action, CommandActionController> Action;
     public System.Action<CommandDelegateManager> Action;
 
     public CommandActionController ActionController;
@@ -305,6 +296,5 @@ public class CommandAction
                 actionManager.StatusUpdate.PlayUpdateAnim(actionManager.OnComplete);
             },
         });
-
     }
 }
