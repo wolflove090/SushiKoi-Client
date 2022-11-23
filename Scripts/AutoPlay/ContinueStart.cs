@@ -149,6 +149,13 @@ public class ContinueStart : EditorWindow
                 var value = EditorGUILayout.IntField(this._Player.Freshness.Value);
                 this._Player.Freshness.Set(value);
             }
+
+            using(new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("おしゃれ", GUILayout.Width(50));
+                var value = EditorGUILayout.IntField(this._Player.Fahinoable.Value);
+                this._Player.Fahinoable.Set(value);
+            }
         }
 
         EditorGUILayout.Space();

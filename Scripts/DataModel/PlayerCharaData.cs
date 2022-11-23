@@ -17,6 +17,7 @@ public class PlayerCharaData : IDataModel
         public int RicePowerValue;
         public int MoneyValue;
         public int FreshnessValue;
+        public int FashionableValue;
     }
 
     public enum ParamType
@@ -27,6 +28,7 @@ public class PlayerCharaData : IDataModel
         RicePower = 4,
         Money = 5,
         Freshness = 6,
+        Fahionable = 7,
     }
 
     public IParam Hp = new Hp(); // 体力,ストレス
@@ -37,6 +39,7 @@ public class PlayerCharaData : IDataModel
     public IParam Money = new Money(); // お金
 
     public IParam Freshness = new Freshness(); // 鮮度
+    public IParam Fahinoable = new Fahionable(); // おしゃれ
 
     // --------------------
     // enumから値の加算
@@ -78,7 +81,12 @@ public class PlayerCharaData : IDataModel
             {
                 this.Freshness.Add(value);
                 break;
-            }   
+            }
+            case PlayerCharaData.ParamType.Fahionable:
+            {
+                this.Fahinoable.Add(value);
+                break;
+            }      
         }
     }
 
@@ -97,7 +105,7 @@ public class PlayerCharaData : IDataModel
             RicePowerValue = this.RicePower.Value,
             MoneyValue = this.Money.Value,
             FreshnessValue = this.Freshness.Value,
-            
+            FashionableValue = this.Fahinoable.Value,
         };
         saveData.PlayerJson = JsonUtility.ToJson(data);
 
@@ -366,5 +374,43 @@ public class Freshness : IParam
             return;
 
         this._Value = data.FreshnessValue;
+    }
+}
+
+// --------------------
+// おしゃれ
+// --------------------
+public class Fahionable : IParam
+{
+    public int Value
+    {
+        get
+        {
+            return this._Value;
+        }
+    }
+    int _Value = 100;
+
+    void IParam.Set(int value)
+    {
+        this._Value = value;
+    }
+
+    // 加算
+    void IParam.Add(int amount)
+    {
+        this._Value += amount;
+    }
+
+    // データロード
+    void IParam.LoadData(SaveData saveData)
+    {
+        var data = JsonUtility.FromJson<PlayerCharaData.PlayerSaveData>(saveData.PlayerJson);
+
+        // データがなければ抜ける
+        if(data == null)
+            return;
+
+        this._Value = data.FashionableValue;
     }
 }

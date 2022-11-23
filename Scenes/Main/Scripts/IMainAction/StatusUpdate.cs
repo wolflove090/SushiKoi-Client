@@ -96,16 +96,6 @@ public class StatusLabel
 
         result.Add(new StatusLabel() 
         {
-            Name = "所持金",
-            _GetValue = () => 
-            {
-                var player = DataManager.GetPlayerChara();
-                return player.Money.Value;
-            }
-        });
-
-        result.Add(new StatusLabel() 
-        {
             Name = "学力",
             _GetValue = () => 
             {
@@ -124,6 +114,7 @@ public class StatusLabel
             }            
         });
 
+        /*
         result.Add(new StatusLabel() 
         {
             Name = "しゃり力",
@@ -132,8 +123,7 @@ public class StatusLabel
                 var player = DataManager.GetPlayerChara();
                 return player.RicePower.Value;
             }        
-        });
-
+        });*/
 
         result.Add(new StatusLabel() 
         {
@@ -143,6 +133,26 @@ public class StatusLabel
                 var player = DataManager.GetPlayerChara();
                 return player.Freshness.Value;
             }        
+        });
+
+        result.Add(new StatusLabel() 
+        {
+            Name = "所持金",
+            _GetValue = () => 
+            {
+                var player = DataManager.GetPlayerChara();
+                return player.Money.Value;
+            }
+        });
+
+        result.Add(new StatusLabel() 
+        {
+            Name = "おしゃれ",
+            _GetValue = () => 
+            {
+                var player = DataManager.GetPlayerChara();
+                return player.Fahinoable.Value;
+            }
         });
 
         return result.ToArray();
