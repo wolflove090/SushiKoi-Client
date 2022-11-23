@@ -293,7 +293,7 @@ public class CommandAction
             OnComplete = () => 
             {
                 // 増減アニメーション後に完了コールバックを叩く
-                actionManager.StatusUpdate.PlayUpdateAnim(actionManager.OnComplete);
+                actionManager.StatusUpdate.PlayUpdateAnim(actionManager.OnComplete, command);
             },
         });
     }

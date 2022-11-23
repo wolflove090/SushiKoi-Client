@@ -69,7 +69,7 @@ public class StatusUpdate : IMainAction
     }
 
     // ステータス更新アニメーション
-    public void PlayUpdateAnim(System.Action onComplete)
+    public void PlayUpdateAnim(System.Action onComplete, CommandStruct command)
     {
         // すべてのアニメーション完了時にonCompleteを叩く
         int count = 1;
@@ -86,7 +86,7 @@ public class StatusUpdate : IMainAction
         foreach(var status in this._StatusList)
         {
             count++;
-            status.PlayUpdateAnim(complete);
+            status.PlayUpdateAnim(complete, command);
         }
 
         complete();
@@ -100,10 +100,11 @@ public class StatusLabel
 {
     public string Name;
     public TextMeshProUGUI ValueLabel;
+    public PlayerCharaData.ParamType ParamType;
     public GameObject Icon;
     public Animation Anim;
 
-    public IParam TargetParam;
+    //public IParam TargetParam;
 
 
     System.Func<int> _GetValue;
@@ -114,9 +115,29 @@ public class StatusLabel
     }
 
     // ステータス更新アニメーション
-    public void PlayUpdateAnim(System.Action onComplete)
+    public void PlayUpdateAnim(System.Action onComplete, CommandStruct command)
     {
-        this.Icon.SetActive(true);
+        var upIcon = this.Icon.transform.Find("UpIcon").gameObject;
+        var downIcon = this.Icon.transform.Find("DownIcon").gameObject;
+
+        upIcon.SetActive(false);
+        downIcon.SetActive(false);
+
+        bool isTarget = false;
+        foreach(var value in command.AddValue)
+        {
+            if(value.TargetType == this.ParamType)
+            {
+                isTarget = true;
+                if(value.Value >= 0)
+                    upIcon.SetActive(true);
+                else
+                    downIcon.SetActive(true);
+            }
+        }
+
+        this.Icon.SetActive(isTarget);
+
         this.Anim.Play("status_update", 
         () => 
         {
@@ -125,6 +146,9 @@ public class StatusLabel
         });
     }
 
+    // --------------------
+    // ステータスラベルのオブジェクト生成
+    // --------------------
     public static StatusLabel[] CreateStatusLabel()
     {
         var result = new List<StatusLabel>();
@@ -132,6 +156,7 @@ public class StatusLabel
         result.Add(new StatusLabel() 
         {
             Name = "ストレス",
+            ParamType = PlayerCharaData.ParamType.Hp,
             _GetValue = () => 
             {
                 var player = DataManager.GetPlayerChara();
@@ -142,6 +167,7 @@ public class StatusLabel
         result.Add(new StatusLabel() 
         {
             Name = "学力",
+            ParamType = PlayerCharaData.ParamType.Edu,
             _GetValue = () => 
             {
                 var player = DataManager.GetPlayerChara();
@@ -152,6 +178,7 @@ public class StatusLabel
         result.Add(new StatusLabel() 
         {
             Name = "運動",
+            ParamType = PlayerCharaData.ParamType.Str,
             _GetValue = () => 
             {
                 var player = DataManager.GetPlayerChara();
@@ -173,6 +200,7 @@ public class StatusLabel
         result.Add(new StatusLabel() 
         {
             Name = "鮮度",
+            ParamType = PlayerCharaData.ParamType.Freshness,
             _GetValue = () => 
             {
                 var player = DataManager.GetPlayerChara();
@@ -183,6 +211,7 @@ public class StatusLabel
         result.Add(new StatusLabel() 
         {
             Name = "所持金",
+            ParamType = PlayerCharaData.ParamType.Money,
             _GetValue = () => 
             {
                 var player = DataManager.GetPlayerChara();
@@ -193,6 +222,7 @@ public class StatusLabel
         result.Add(new StatusLabel() 
         {
             Name = "おしゃれ",
+            ParamType = PlayerCharaData.ParamType.Fahionable,
             _GetValue = () => 
             {
                 var player = DataManager.GetPlayerChara();
