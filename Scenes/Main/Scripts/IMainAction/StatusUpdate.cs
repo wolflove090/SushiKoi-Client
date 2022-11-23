@@ -79,6 +79,7 @@ public class StatusUpdate : IMainAction
 
             if(count <= 0)
             {
+                this._Update();
                 onComplete();
             }
         };
