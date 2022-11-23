@@ -47,6 +47,7 @@ public class StatusUpdate : IMainAction
 
             var icon = obj.transform.Find("Icon");
             status.Icon = icon.gameObject;
+            status.Icon.SetActive(false);
 
             var anim = obj.GetComponent<Animation>();
             status.Anim = anim;
@@ -118,11 +119,11 @@ public class StatusLabel
     // ステータス更新アニメーション
     public void PlayUpdateAnim(System.Action onComplete, CommandStruct command)
     {
-        var upIcon = this.Icon.transform.Find("UpIcon").gameObject;
-        var downIcon = this.Icon.transform.Find("DownIcon").gameObject;
+        var up = this.Icon.transform.Find("UpValue").GetComponent<TextMeshProUGUI>();
+        var down = this.Icon.transform.Find("DownValue").GetComponent<TextMeshProUGUI>();
 
-        upIcon.SetActive(false);
-        downIcon.SetActive(false);
+        up.gameObject.SetActive(false);
+        down.gameObject.SetActive(false);
 
         bool isTarget = false;
         foreach(var value in command.AddValue)
@@ -130,10 +131,16 @@ public class StatusLabel
             if(value.TargetType == this.ParamType)
             {
                 isTarget = true;
-                if(value.Value >= 0)
-                    upIcon.SetActive(true);
+                if(PlayerCharaData.IsPositiveChange(value))
+                {
+                    up.gameObject.SetActive(true);
+                    up.text = value.Value.ToString();
+                }
                 else
-                    downIcon.SetActive(true);
+                {
+                    down.gameObject.SetActive(true);
+                    down.text = value.Value.ToString();
+                }
             }
         }
 

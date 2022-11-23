@@ -91,6 +91,39 @@ public class PlayerCharaData : IDataModel
     }
 
     // --------------------
+    // 増減値プレイヤーにとって有利かどうか
+    // --------------------
+    public static bool IsPositiveChange(CommandValue changeValue)
+    {
+        // TODO Switch文は嫌
+        bool isAddPositive = false; // 上昇したほうが有利
+        switch(changeValue.TargetType)
+        {
+            case PlayerCharaData.ParamType.Hp:
+            case PlayerCharaData.ParamType.Freshness:
+            {
+                isAddPositive = false;
+                break;
+            }   
+
+            case PlayerCharaData.ParamType.Edu:
+            case PlayerCharaData.ParamType.Str:
+            case PlayerCharaData.ParamType.RicePower:
+            case PlayerCharaData.ParamType.Money:
+            case PlayerCharaData.ParamType.Fahionable:
+            {
+                isAddPositive = true;
+                break;
+            }   
+        }   
+
+        bool isAddValue = changeValue.Value >= 0;
+
+        return isAddValue == isAddPositive;     
+    }
+
+
+    // --------------------
     // Jsonに変換
     // --------------------
     SaveData IDataModel.SetSaveData(SaveData saveData)
