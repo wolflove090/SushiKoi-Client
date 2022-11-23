@@ -191,7 +191,7 @@ public class CommandAction
             Action = (onComplete, actionController) => 
             {
                 var config = ConfigManager.GetCommandConfig();
-                var command = config.Job;
+                var command = config.GoOut;
 
                 // アクション実行
                 DefaultCommandAction(command, "おでかけ", (onComplete, actionController));
@@ -206,7 +206,7 @@ public class CommandAction
             Action = (onComplete, actionController) => 
             {
                 var config = ConfigManager.GetCommandConfig();
-                var command = config.Job;
+                var command = config.Esthetic;
 
                 // アクション実行
                 DefaultCommandAction(command, "エステ", (onComplete, actionController));
@@ -221,7 +221,7 @@ public class CommandAction
             Action = (onComplete, actionController) => 
             {
                 var config = ConfigManager.GetCommandConfig();
-                var command = config.Job;
+                var command = config.CharmUp;
 
                 // アクション実行
                 DefaultCommandAction(command, "魅力", (onComplete, actionController));

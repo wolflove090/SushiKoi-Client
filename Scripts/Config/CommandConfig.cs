@@ -12,6 +12,9 @@ public class CommandConfig : ScriptableObject
     public CommandStruct Study;
     public CommandStruct Club;
     public CommandStruct Job;
+    public CommandStruct GoOut;
+    public CommandStruct Esthetic;
+    public CommandStruct CharmUp;
 }
 
 // --------------------
