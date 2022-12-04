@@ -180,11 +180,15 @@ public interface IParam
     void LoadData(SaveData saveData);
 }
 
-// TODO 継承を検討
+public class PlayerParameter
+{
+    protected StatusStruct _Config;
+}
+
 // --------------------
 // 体力、ストレス
 // --------------------
-public class Hp : IParam
+public class Hp : PlayerParameter, IParam
 {
     public int Value
     {
@@ -194,6 +198,16 @@ public class Hp : IParam
         }
     }
     int _Value = 100;
+
+    public Hp()
+    {
+        var statusConfig = ConfigManager.GetStatusConfig();
+        if(statusConfig == null)
+            return;
+
+        this._Config = statusConfig.Hp;
+        this._Value = this._Config.InitValue;
+    }
 
     void IParam.Set(int value)
     {
@@ -222,7 +236,7 @@ public class Hp : IParam
 // --------------------
 // 学力
 // --------------------
-public class Edu : IParam
+public class Edu : PlayerParameter, IParam
 {
     public int Value
     {
@@ -232,6 +246,17 @@ public class Edu : IParam
         }
     }
     int _Value = 0;
+
+    public Edu()
+    {
+        var statusConfig = ConfigManager.GetStatusConfig();
+        if(statusConfig == null)
+            return;
+
+        this._Config = statusConfig.Edu;
+
+        this._Value = this._Config.InitValue;
+    }
 
     void IParam.Set(int value)
     {
@@ -260,7 +285,7 @@ public class Edu : IParam
 // --------------------
 // 筋力、運動
 // --------------------
-public class Str : IParam
+public class Str : PlayerParameter, IParam
 {
     public int Value
     {
@@ -270,6 +295,17 @@ public class Str : IParam
         }
     }
     int _Value = 0;
+
+    public Str()
+    {
+        var statusConfig = ConfigManager.GetStatusConfig();
+        if(statusConfig == null)
+            return;
+
+        this._Config = statusConfig.Str;
+
+        this._Value = this._Config.InitValue;
+    }
 
     void IParam.Set(int value)
     {
@@ -298,7 +334,7 @@ public class Str : IParam
 // --------------------
 // シャリ力
 // --------------------
-public class RicePower : IParam
+public class RicePower : PlayerParameter, IParam
 {
     public int Value
     {
@@ -336,7 +372,7 @@ public class RicePower : IParam
 // --------------------
 // お金
 // --------------------
-public class Money : IParam
+public class Money : PlayerParameter, IParam
 {
     public int Value
     {
@@ -346,6 +382,17 @@ public class Money : IParam
         }
     }
     int _Value = 500;
+
+    public Money()
+    {
+        var statusConfig = ConfigManager.GetStatusConfig();
+        if(statusConfig == null)
+            return;
+
+        this._Config = statusConfig.Money;
+
+        this._Value = this._Config.InitValue;
+    }
 
     void IParam.Set(int value)
     {
@@ -375,7 +422,7 @@ public class Money : IParam
 // --------------------
 // 鮮度
 // --------------------
-public class Freshness : IParam
+public class Freshness : PlayerParameter, IParam
 {
     public int Value
     {
@@ -385,6 +432,17 @@ public class Freshness : IParam
         }
     }
     int _Value = 100;
+
+    public Freshness()
+    {
+        var statusConfig = ConfigManager.GetStatusConfig();
+        if(statusConfig == null)
+            return;
+
+        this._Config = statusConfig.Freshness;
+
+        this._Value = this._Config.InitValue;
+    }
 
     void IParam.Set(int value)
     {
@@ -413,7 +471,7 @@ public class Freshness : IParam
 // --------------------
 // おしゃれ
 // --------------------
-public class Fahionable : IParam
+public class Fahionable : PlayerParameter, IParam
 {
     public int Value
     {
@@ -423,6 +481,16 @@ public class Fahionable : IParam
         }
     }
     int _Value = 100;
+
+    public Fahionable()
+    {
+        var statusConfig = ConfigManager.GetStatusConfig();
+        if(statusConfig == null)
+            return;
+
+        this._Config = statusConfig.Fahionable;
+        this._Value = this._Config.InitValue;
+    }
 
     void IParam.Set(int value)
     {

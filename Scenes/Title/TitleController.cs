@@ -12,11 +12,11 @@ public class TitleController : ControllerBase<TitleViewModel>
         var toGameCommand = new SwitchToGameMode();
         toGameCommand.ExecuteAsync().Forget();
 
-        // データマネージャー初期化
-        DataManager.Init();
-
         // コンフィグマネージャー初期化
         ConfigManager.Init();
+
+        // データマネージャー初期化
+        DataManager.Init();
 
         // サウンドマネージャー初期化
         SoundManager.Init();
