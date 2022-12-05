@@ -9,6 +9,5 @@ public class StatusConfigEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        Debug.Log("hoge");
     }
 }

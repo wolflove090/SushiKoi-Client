@@ -209,15 +209,18 @@ public class Hp : PlayerParameter, IParam
         this._Value = this._Config.InitValue;
     }
 
+    // 値の上書き
     void IParam.Set(int value)
     {
-        this._Value = value;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(value, max);
     }
 
     // 加算
     void IParam.Add(int amount)
     {
-        this._Value += amount;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(this._Value + amount, max);
     }
 
     // データロード
@@ -258,15 +261,18 @@ public class Edu : PlayerParameter, IParam
         this._Value = this._Config.InitValue;
     }
 
+    // 値の上書き
     void IParam.Set(int value)
     {
-        this._Value = value;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(value, max);
     }
 
     // 加算
     void IParam.Add(int amount)
     {
-        this._Value += amount;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(this._Value + amount, max);
     }
 
     // データロード
@@ -307,15 +313,18 @@ public class Str : PlayerParameter, IParam
         this._Value = this._Config.InitValue;
     }
 
+    // 値の上書き
     void IParam.Set(int value)
     {
-        this._Value = value;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(value, max);
     }
 
     // 加算
     void IParam.Add(int amount)
     {
-        this._Value += amount;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(this._Value + amount, max);
     }
 
     // データロード
@@ -345,15 +354,18 @@ public class RicePower : PlayerParameter, IParam
     }
     int _Value = 0;
 
+    // 値の上書き
     void IParam.Set(int value)
     {
-        this._Value = value;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(value, max);
     }
 
     // 加算
     void IParam.Add(int amount)
     {
-        this._Value += amount;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(this._Value + amount, max);
     }
 
     // データロード
@@ -394,15 +406,18 @@ public class Money : PlayerParameter, IParam
         this._Value = this._Config.InitValue;
     }
 
+    // 値の上書き
     void IParam.Set(int value)
     {
-        this._Value = value;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(value, max);
     }
 
     // 加算
     void IParam.Add(int amount)
     {
-        this._Value += amount;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(this._Value + amount, max);
     }
 
     // データロード
@@ -444,15 +459,18 @@ public class Freshness : PlayerParameter, IParam
         this._Value = this._Config.InitValue;
     }
 
+    // 値の上書き
     void IParam.Set(int value)
     {
-        this._Value = value;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(value, max);
     }
 
     // 加算
     void IParam.Add(int amount)
     {
-        this._Value += amount;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(this._Value + amount, max);
     }
 
     // データロード
@@ -492,15 +510,18 @@ public class Fahionable : PlayerParameter, IParam
         this._Value = this._Config.InitValue;
     }
 
+    // 値の上書き
     void IParam.Set(int value)
     {
-        this._Value = value;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(value, max);
     }
 
     // 加算
     void IParam.Add(int amount)
     {
-        this._Value += amount;
+        var max = this._Config != null ? this._Config.MaxValue : 9999;
+        this._Value = Mathf.Min(this._Value + amount, max);
     }
 
     // データロード
