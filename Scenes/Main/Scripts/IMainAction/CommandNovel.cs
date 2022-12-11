@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Naninovel;
 using UnityEngine.UI;
+using System.Linq;
 
 // --------------------
 // コマンド選択ADV
@@ -94,6 +95,7 @@ public class CommandAction
 {
     public string CommandName;
     public string BackPath;
+    public int Spot; // 室内 = 1, 室外 = 2 TODO：Define化させる
     public System.Action<CommandDelegateManager> Action;
 
     public CommandActionController ActionController;
@@ -103,12 +105,12 @@ public class CommandAction
     {
         var result = new List<CommandAction>();
 
-
         // 休む
         result.Add(new CommandAction()
         {
             CommandName = "休む",
             BackPath = "Images/CommandButton/btn_cmd_rest_off",
+            Spot = 1,
             Action = (actionManager) => 
             {
                 var player = DataManager.GetPlayerChara();
@@ -118,7 +120,7 @@ public class CommandAction
                 var command = config.Rest;
 
                 // アクション実行
-                DefaultCommandAction(command, "休む", actionManager);
+                DefaultCommandAction(command, 1, "休む", actionManager);
             },
         });
 
@@ -127,13 +129,14 @@ public class CommandAction
         {
             CommandName = "勉強",
             BackPath = "Images/CommandButton/btn_cmd_study_off",
+            Spot = 1,
             Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Study;
 
                 // アクション実行
-                DefaultCommandAction(command, "勉強", actionManager);
+                DefaultCommandAction(command, 1, "勉強", actionManager);
             },
         });
 
@@ -142,13 +145,14 @@ public class CommandAction
         {
             CommandName = "部活",
             BackPath = "Images/CommandButton/btn_cmd_activity_off",
+            Spot = 2,
             Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Club;
 
                 // アクション実行
-                DefaultCommandAction(command, "部活", actionManager);
+                DefaultCommandAction(command, 2, "部活", actionManager);
             },
         });
 
@@ -157,13 +161,14 @@ public class CommandAction
         {
             CommandName = "バイト",
             BackPath = "Images/CommandButton/btn_cmd_job_off",
+            Spot = 1,
             Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Job;
 
                 // アクション実行
-                DefaultCommandAction(command, "バイト", actionManager);
+                DefaultCommandAction(command, 1, "バイト", actionManager);
             },            
 
         });
@@ -173,6 +178,7 @@ public class CommandAction
         {
             CommandName = "デート",
             BackPath = "Images/CommandButton/btn_cmd_date_off",
+            Spot = 2,
             Action = (actionManager) => 
             {
                 // 成功判断
@@ -205,13 +211,14 @@ public class CommandAction
         {
             CommandName = "おでかけ",
             BackPath = "Images/CommandButton/btn_cmd_job_off",
+            Spot = 2,
             Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.GoOut;
 
                 // アクション実行
-                DefaultCommandAction(command, "おでかけ", actionManager);
+                DefaultCommandAction(command, 2, "おでかけ", actionManager);
             },            
         });
 
@@ -220,13 +227,14 @@ public class CommandAction
         {
             CommandName = "エステ",
             BackPath = "Images/CommandButton/btn_cmd_job_off",
+            Spot = 1,
             Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.Esthetic;
 
                 // アクション実行
-                DefaultCommandAction(command, "エステ", actionManager);
+                DefaultCommandAction(command, 1, "エステ", actionManager);
             },            
         });
 
@@ -235,13 +243,14 @@ public class CommandAction
         {
             CommandName = "魅力",
             BackPath = "Images/CommandButton/btn_cmd_job_off",
+            Spot = 1,
             Action = (actionManager) => 
             {
                 var config = ConfigManager.GetCommandConfig();
                 var command = config.CharmUp;
 
                 // アクション実行
-                DefaultCommandAction(command, "魅力", actionManager);
+                DefaultCommandAction(command, 1, "魅力", actionManager);
             },            
         });
 
@@ -266,7 +275,7 @@ public class CommandAction
 
     // デフォルトコマンド処理
     // TODO 通常コマンドと特殊コマンドで実態を変えたい
-    static void DefaultCommandAction(CommandStruct command, string commandName, CommandDelegateManager actionManager)
+    static void DefaultCommandAction(CommandStruct command, int spot, string commandName, CommandDelegateManager actionManager)
     {
         // 成功判断
         int sucessRate = command.SuccessRate;
@@ -274,6 +283,30 @@ public class CommandAction
 
         var player = DataManager.GetPlayerChara();
         player.Hp.Add(- command.NeedHp);
+
+        // 新鮮度
+        var freshnessConfig = ConfigManager.GetFreshnessConfig();
+        var decFreshness = 0;
+        var month = DataManager.GetDate().Month;
+        foreach(var config in freshnessConfig.CustomDecValue)
+        {
+            bool isTarget = config.TargetManths.Any(value => value == month);
+            if(isTarget)
+            {
+                switch(spot)
+                {
+                    // 室内
+                    case 1:
+                        decFreshness = config.DecValueForIndoors;
+                        break;
+                    // 室外
+                    case 2:
+                        decFreshness = config.DecValueForOutdoors;
+                        break;                    
+                }
+            }
+        }
+        player.Freshness.Add(- decFreshness);
 
         // 成功した時だけ上昇
         if(isSucess)

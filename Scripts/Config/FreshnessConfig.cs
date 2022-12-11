@@ -8,8 +8,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FreshnessConfig", menuName = "すし恋/FreshnessConfig")]
 public class FreshnessConfig : ScriptableObject
 {
-    public int DefaultDecValue;
-
     public CustomDecFreshness[] CustomDecValue;
 }
 
@@ -19,6 +17,7 @@ public class FreshnessConfig : ScriptableObject
 [System.Serializable]
 public class CustomDecFreshness
 {
-    public int Month;
-    public int DecValue;
+    public int[] TargetManths;
+    public int DecValueForIndoors;
+    public int DecValueForOutdoors;
 }
