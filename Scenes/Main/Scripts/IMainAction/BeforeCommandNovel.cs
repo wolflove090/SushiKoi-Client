@@ -13,7 +13,7 @@ public class BeforeCommandNovel : IMainAction
     public BeforeCommandNovel()
     {
         // ノベルマスタの取得
-        this._NovelMaster = MasterUtil.LoadAll<BeforeCommandNovelData>("MasterData/before_command_novel");
+        this._NovelMaster = MasterUtil.LoadAll<BeforeCommandNovelData>();
     }
 
     void IMainAction.Play(System.Action onComplete)

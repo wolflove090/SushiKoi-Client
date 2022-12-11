@@ -9,9 +9,15 @@ public class MasterUtil
     // --------------------
     // マスタをCSVから取得
     // --------------------
-    public static T[] LoadAll<T>(string masterPath) 
+    public static T[] LoadAll<T>() 
         where T : class, new()
     {
+        var pathAttribute = (CsvFilePathAtrribute)System.Attribute.GetCustomAttribute(typeof(T), typeof(CsvFilePathAtrribute));
+        if(pathAttribute == null)
+            throw new Exception("パスが設定されていません。");
+
+        var masterPath = pathAttribute.Path;
+
         var csvFile = Resources.Load<TextAsset>(masterPath);
 
         // テキストデータを配列に変換
@@ -103,6 +109,21 @@ public class CsvColumnAtrribute : System.Attribute
     public CsvColumnAtrribute(string name)
     {
         this.Name = name;
+    }
+}
+
+/*
+<summary>
+CSVのファイルパスを指定するための属性
+</summary>
+*/
+public class CsvFilePathAtrribute : System.Attribute
+{
+    public string Path;
+
+    public CsvFilePathAtrribute(string name)
+    {
+        this.Path = name;
     }
 }
 

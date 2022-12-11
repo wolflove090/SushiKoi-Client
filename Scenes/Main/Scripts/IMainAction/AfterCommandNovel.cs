@@ -14,8 +14,8 @@ public class AfterCommandNovel : IMainAction
     public AfterCommandNovel()
     {
         // ノベルマスタの取得
-        this._NovelMaster = MasterUtil.LoadAll<AfterCommandNovelData>("MasterData/after_command_novel");
-        this._MagrouNovelMaster = MasterUtil.LoadAll<MagrouEpisodeNovelSchema>("MasterData/magrou_episode_novel");
+        this._NovelMaster = MasterUtil.LoadAll<AfterCommandNovelData>();
+        this._MagrouNovelMaster = MasterUtil.LoadAll<MagrouEpisodeNovelSchema>();
     }
 
     void IMainAction.Play(System.Action onComplete)

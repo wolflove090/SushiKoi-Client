@@ -25,7 +25,7 @@ public class NovelViwer : EditorWindow
         if(this._BeforeNovelData == null)
         {
             // コマンド前 ノベルマスタの取得
-            var mstBeforeNovels = MasterUtil.LoadAll<BeforeCommandNovelData>("MasterData/before_command_novel");
+            var mstBeforeNovels = MasterUtil.LoadAll<BeforeCommandNovelData>();
             
             this._BeforeNovelData = new NovelData();
             this._BeforeNovelData.NovelViewDatas = new NovelViewData[mstBeforeNovels.Length];
@@ -36,7 +36,7 @@ public class NovelViwer : EditorWindow
             }
 
             // コマンド後 ノベルマスタの取得
-            var mstAfterNovels = MasterUtil.LoadAll<AfterCommandNovelData>("MasterData/after_command_novel");
+            var mstAfterNovels = MasterUtil.LoadAll<AfterCommandNovelData>();
             this._AfterNovelData = new NovelData();
             this._AfterNovelData.NovelViewDatas = new NovelViewData[mstAfterNovels.Length];
             for(int i = 0; i < mstAfterNovels.Length; i++)
@@ -46,7 +46,7 @@ public class NovelViwer : EditorWindow
             }
 
             // コマンド後 ノベルマスタの取得
-            var mstEpisodeNovels = MasterUtil.LoadAll<MagrouEpisodeNovelSchema>("MasterData/magrou_episode_novel");
+            var mstEpisodeNovels = MasterUtil.LoadAll<MagrouEpisodeNovelSchema>();
             this._MagrouNovelData = new EpisodeNovelData();
             this._MagrouNovelData.NovelViewDatas = new EpisodeNovelViewData[mstEpisodeNovels.Length];
             for(int i = 0; i < mstEpisodeNovels.Length; i++)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CsvFilePathAtrribute("MasterData/after_command_novel")]
 public class AfterCommandNovelData
 {
     [CsvColumnAtrribute("Month")]

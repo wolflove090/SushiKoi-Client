@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CsvFilePathAtrribute("MasterData/magrou_episode_novel")]
 public class MagrouEpisodeNovelSchema
 {
     [CsvColumnAtrribute("Month")]
