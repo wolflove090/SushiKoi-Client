@@ -63,10 +63,10 @@ public class CommandNovel : IMainAction
         var config = ConfigManager.GetCommandConfig();
 
         // 休む
-        result.Add(new DefaultCommand(config.Rest, this._Main,"休む", "Images/CommandButton/btn_cmd_rest_off"));
+        result.Add(new StatusCommand(config.Rest, this._Main,"休む", "Images/CommandButton/btn_cmd_rest_off"));
 
         // 勉強
-        result.Add(new DefaultCommand(config.Rest, this._Main,"勉強", "Images/CommandButton/btn_cmd_study_off"));
+        result.Add(new StatusCommand(config.Study, this._Main,"勉強", "Images/CommandButton/btn_cmd_study_off"));
 
         return result.ToArray();
     }

@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class DefaultCommand : ICommand
+public class StatusCommand : ICommand
 {
+    public enum ActivitySpot
+    {
+        Indoor = 1,
+        Outdoor = 2,
+    }
+
     // TODO 動的に変更させたいため、indexをもらって発火時に参照するように変更
     // 毎回ロードするのはエディタ時のみでよい
     CommandStruct _CommandData;
@@ -14,8 +20,7 @@ public class DefaultCommand : ICommand
     MainController _Main;
 
     // TODO 最終的にはコンフィグに集約させる
-    // TODO 演出の流れはメインコントローラーで定義してあげてもいいかも
-    public DefaultCommand(CommandStruct command, MainController main, string name, string path)
+    public StatusCommand(CommandStruct command, MainController main, string name, string path)
     {
         this._CommandData = command;
         this._Name = name;
