@@ -57,6 +57,9 @@ public class CommandNovel : IMainAction
         this._CommandButton.gameObject.SetActive(false);    
     }
 
+    // --------------------
+    // コマンド生成
+    // --------------------
     ICommand[] _GetCommands()
     {
         var date = DataManager.GetDate();
@@ -69,6 +72,9 @@ public class CommandNovel : IMainAction
 
     }
 
+    // --------------------
+    // ステータスコマンド
+    // --------------------
     ICommand[] _CreateCommandsForStatus()
     {
         var result = new List<ICommand>();
@@ -83,55 +89,13 @@ public class CommandNovel : IMainAction
         return result.ToArray();
     }
 
+    // --------------------
+    // 初登校コマンド
+    // --------------------
     ICommand[] _CreateCommandsForFirstSchool()
     {
         var result = new List<ICommand>();
         result.Add(new NovelCommand("登校","Images/CommandButton/btn_cmd_rest_off", "FirstSchool"));
-
-        return result.ToArray();
-    }
-}
-
-// --------------------
-// コマンドに使用するアクション定義
-// --------------------
-public class CommandDelegateManager
-{
-    // コマンドアニメーション再生用
-    public CommandActionController CommandActionController;
-
-    // ステータス更新アニメーション用
-    public StatusUpdate StatusUpdate;
-
-    // コマンド処理終わったら叩かれる
-    public System.Action OnComplete;
-
-}
-
-// --------------------
-// 各コマンドの定義作成
-// --------------------
-public class CommandAction
-{
-    public string CommandName;
-    public string BackPath;
-    public int Spot; // 室内 = 1, 室外 = 2 TODO：Define化させる
-    public System.Action<CommandDelegateManager> Action;
-
-    public CommandActionController ActionController;
-
-    // 初登校コマンドを生成
-    public static CommandAction[] CreateActionsForFirstSchool()
-    {
-        var result = new List<CommandAction>();
-
-        // 登校
-        result.Add(new CommandAction()
-        {
-            CommandName = "登校",
-            BackPath = "Images/CommandButton/btn_cmd_rest_off",
-            Action = (actionManager) => NovelUtil.StartNovel("FirstSchool", actionManager.OnComplete),
-        });
 
         return result.ToArray();
     }
