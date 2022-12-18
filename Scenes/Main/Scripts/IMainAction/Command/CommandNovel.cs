@@ -59,6 +59,18 @@ public class CommandNovel : IMainAction
 
     ICommand[] _GetCommands()
     {
+        var date = DataManager.GetDate();
+
+        // 初登校
+        if(date.Month == 4 && date.Week == 1)
+            return this._CreateCommandsForFirstSchool();
+        
+        return this._CreateCommandsForStatus();
+
+    }
+
+    ICommand[] _CreateCommandsForStatus()
+    {
         var result = new List<ICommand>();
         var config = ConfigManager.GetCommandConfig();
 
@@ -68,6 +80,14 @@ public class CommandNovel : IMainAction
 
             result.Add(model);
         }
+        return result.ToArray();
+    }
+
+    ICommand[] _CreateCommandsForFirstSchool()
+    {
+        var result = new List<ICommand>();
+        result.Add(new NovelCommand("登校","Images/CommandButton/btn_cmd_rest_off", "FirstSchool"));
+
         return result.ToArray();
     }
 }
