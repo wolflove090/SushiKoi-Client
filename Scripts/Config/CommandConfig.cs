@@ -8,14 +8,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CommandConfig", menuName = "すし恋/CommandConfig")]
 public class CommandConfig : ScriptableObject
 {
-    public CommandStruct Rest;
-    public CommandStruct Study;
-    public CommandStruct Club;
-    public CommandStruct Job;
-    public CommandStruct GoOut;
-    public CommandStruct Esthetic;
-    public CommandStruct CharmUp;
-
     public CommandStruct[] Commands;
 }
 
@@ -25,7 +17,6 @@ public class CommandConfig : ScriptableObject
 [System.Serializable]
 public class CommandStruct
 {
-    public int NeedHp; // TODO 消す
     public int SuccessRate;
     public CommandValue[] AddValue;
 

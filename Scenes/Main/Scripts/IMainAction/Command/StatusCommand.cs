@@ -58,7 +58,6 @@ public class StatusCommand : ICommand
         bool isSucess = Random.Range(1, 101) <= sucessRate;
 
         var player = DataManager.GetPlayerChara();
-        player.Hp.Add(- this._CommandData.NeedHp);
 
         // 新鮮度
         var freshnessConfig = ConfigManager.GetFreshnessConfig();

@@ -7,24 +7,9 @@ using UnityEditor;
 public class CommandDataEditor : Editor
 {
     SerializedProperty _Commands;
-    List<CommandProperty2> _CommandPropertys;
-
-    CommandProperty _Rest;
-    CommandProperty _Study;
-    CommandProperty _Club;
-    CommandProperty _Job;
-
-    CommandProperty _GoOut;
-    CommandProperty _Esthetic;
-    CommandProperty _CharmUp;
+    List<CommandProperty> _CommandPropertys;
 
     class CommandProperty
-    {
-        public bool IsShow;
-        public SerializedProperty Property;
-    }
-
-    class CommandProperty2
     {
         public bool IsShow;
         public bool IsShowFixedValue;
@@ -34,54 +19,22 @@ public class CommandDataEditor : Editor
     void OnEnable() 
     {
         this._Commands = serializedObject.FindProperty("Commands");
-        this._CommandPropertys = new List<CommandProperty2>();
+        this._CommandPropertys = new List<CommandProperty>();
         for(int i = 0; i < this._Commands.arraySize; i++)
         {
             var property = this._Commands.GetArrayElementAtIndex(i);
-            var command = new CommandProperty2()
+            var command = new CommandProperty()
             {
                 Property = property,
             };
 
             this._CommandPropertys.Add(command);
         }
-
-        this._Rest = new CommandProperty()
-        {
-            Property = serializedObject.FindProperty("Rest"),
-        };
-
-        this._Study = new CommandProperty()
-        {
-            Property = serializedObject.FindProperty("Study"),
-        };
-
-        this._Club = new CommandProperty()
-        {
-            Property = serializedObject.FindProperty("Club"),
-        };
-
-        this._Job = new CommandProperty()
-        {
-            Property = serializedObject.FindProperty("Job"),
-        };  
-
-        this._GoOut = new CommandProperty()
-        {
-            Property = serializedObject.FindProperty("GoOut"),
-        };
-
-        this._Esthetic = new CommandProperty()
-        {
-            Property = serializedObject.FindProperty("Esthetic"),
-        };
-
-        this._CharmUp = new CommandProperty()
-        {
-            Property = serializedObject.FindProperty("CharmUp"),
-        };
     }
 
+    // --------------------
+    // OnInspectorGUI
+    // --------------------
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -132,7 +85,7 @@ public class CommandDataEditor : Editor
             this._Commands.InsertArrayElementAtIndex(index);
             var property = this._Commands.GetArrayElementAtIndex(index);
 
-            var command = new CommandProperty2()
+            var command = new CommandProperty()
             {
                 Property = property,
             };
@@ -140,43 +93,7 @@ public class CommandDataEditor : Editor
         }
         GUI.skin.button.normal.textColor = buttonColor;
 
-
         EditorGUILayout.Space();
-
-        // ========== 休むコマンド
-        this._Rest.IsShow = EditorGUILayout.Foldout(this._Rest.IsShow, "休むコマンド", true);
-        if(this._Rest.IsShow)
-            this._ShowCommandStruct(this._Rest.Property);
-
-        // ========== 勉強コマンド
-        this._Study.IsShow = EditorGUILayout.Foldout(this._Study.IsShow, "勉強コマンド", true);
-        if(this._Study.IsShow)
-            this._ShowCommandStruct(this._Study.Property);
-
-        // ========== 部活コマンド
-        this._Club.IsShow = EditorGUILayout.Foldout(this._Club.IsShow, "部活コマンド", true);
-        if(this._Club.IsShow)        
-            this._ShowCommandStruct(this._Club.Property);
-
-        // ========== バイトコマンド
-        this._Job.IsShow = EditorGUILayout.Foldout(this._Job.IsShow, "バイトコマンド", true);
-        if(this._Job.IsShow)  
-            this._ShowCommandStruct(this._Job.Property);
-
-        // ========== おでかけコマンド
-        this._GoOut.IsShow = EditorGUILayout.Foldout(this._GoOut.IsShow, "おでかけコマンド", true);
-        if(this._GoOut.IsShow)  
-            this._ShowCommandStruct(this._GoOut.Property);
-
-        // ========== エステコマンド
-        this._Esthetic.IsShow = EditorGUILayout.Foldout(this._Esthetic.IsShow, "エステコマンド", true);
-        if(this._Esthetic.IsShow)  
-            this._ShowCommandStruct(this._Esthetic.Property);
-
-        // ========== 魅力コマンド
-        this._CharmUp.IsShow = EditorGUILayout.Foldout(this._CharmUp.IsShow, "魅力コマンド", true);
-        if(this._CharmUp.IsShow)  
-            this._ShowCommandStruct(this._CharmUp.Property);        
 
         // ========== ホットリロードボタン
         if(EditorApplication.isPlaying)
@@ -206,12 +123,6 @@ public class CommandDataEditor : Editor
             // 名前
             EditorGUILayout.LabelField("コマンド名");
             EditorGUILayout.PropertyField(name);
-
-            EditorGUILayout.Space();
-
-            // 必要HP
-            //EditorGUILayout.LabelField("必要ストレス値");
-            //EditorGUILayout.PropertyField(needHp);
 
             EditorGUILayout.Space();
 
