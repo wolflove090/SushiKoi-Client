@@ -8,6 +8,8 @@ public class MainController : ControllerBase<MainViewModel>
     // アクションリスト
     List<IMainAction> _MainActionList = new List<IMainAction>();
 
+    StatusUpdate _StatusUpdate;
+
     // --------------------
     // _OnStart
     // --------------------
@@ -17,22 +19,17 @@ public class MainController : ControllerBase<MainViewModel>
         // 設定した順番で繰り返す
         this._MainActionList.Add(new ChoiceMakeUp());
         this._MainActionList.Add(new BeforeCommandNovel());
-        var statusUpdate = new StatusUpdate(this._ViewModel.StatusContent.transform.Find("Root").gameObject, this._ViewModel.Status);
-        this._MainActionList.Add(statusUpdate);
-
-        var commandLinker = new CommandDelegateManager()
-        {
-            CommandActionController = this._ViewModel.CommandAction,
-            StatusUpdate = statusUpdate,
-        };
-        this._MainActionList.Add(new CommandNovel(this._ViewModel.CommandButton, this._ViewModel.ComanndList.transform, commandLinker));
-        
+        this._StatusUpdate = new StatusUpdate(this._ViewModel.StatusContent.transform.Find("Root").gameObject, this._ViewModel.Status);
+        this._MainActionList.Add(this._StatusUpdate);
+        this._MainActionList.Add(new CommandNovel(this._ViewModel.CommandButton, this._ViewModel.ComanndList.transform, this));
         this._MainActionList.Add(new AfterCommandNovel());
         this._MainActionList.Add(new OverTheDateEffect(this._ViewModel.DateLabel, this._ViewModel.DayUpdate));
         this._MainActionList.Add(new UpdatePlayerData());
-        this._MainActionList.Add(statusUpdate);
+        this._MainActionList.Add(this._StatusUpdate);
         this._MainActionList.Add(new LikabilityUpdate(this._ViewModel.LikabilityStatus));
         this._MainActionList.Add(new AutoSave());
+
+        this._ViewModel.CommandAction.Init();
 
         // アクション開始
         this._PlayAction(0);
@@ -72,6 +69,23 @@ public class MainController : ControllerBase<MainViewModel>
         this._ViewModel.ChoiceContent.ExternalStart(new ChoiceLinker() 
         {
             ChoiceButtons = choiceButtons,
+        });
+    }
+
+    // --------------------
+    // コマンド演出
+    // --------------------
+    public void ShowCommandEffect(string name, bool isClear, CommandStruct command, System.Action onComplete)
+    {
+        this._ViewModel.CommandAction.ExternalStart(new CommandActionLinker()
+        {
+            ActionName = name,
+            IsClear = isClear,
+            OnComplete = () => 
+            {
+                // 増減アニメーション後に完了コールバックを叩く
+                this._StatusUpdate.PlayUpdateAnim(onComplete, command);
+            }
         });
     }
 

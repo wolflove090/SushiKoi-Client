@@ -16,15 +16,13 @@ public class CommandNovel : IMainAction
     ButtonBase _CommandButton;
     Transform _CommandButtonRoot;
 
-    CommandDelegateManager _ActionManager;
+    MainController _Main;
 
-    public CommandNovel(ButtonBase commandButton, Transform commandButtonRoot, CommandDelegateManager actionManager)
+    public CommandNovel(ButtonBase commandButton, Transform commandButtonRoot, MainController main)
     {
         this._CommandButton = commandButton;
         this._CommandButtonRoot = commandButtonRoot;
-        this._ActionManager = actionManager;
-
-        this._ActionManager.CommandActionController.Init();
+        this._Main = main;
     }
 
     void IMainAction.Play(System.Action onComplete)
@@ -65,10 +63,10 @@ public class CommandNovel : IMainAction
         var config = ConfigManager.GetCommandConfig();
 
         // 休む
-        result.Add(new DefaultCommand(config.Rest, this._ActionManager.StatusUpdate, this._ActionManager.CommandActionController,"休む", "Images/CommandButton/btn_cmd_rest_off"));
+        result.Add(new DefaultCommand(config.Rest, this._Main,"休む", "Images/CommandButton/btn_cmd_rest_off"));
 
         // 勉強
-        result.Add(new DefaultCommand(config.Rest, this._ActionManager.StatusUpdate, this._ActionManager.CommandActionController,"勉強", "Images/CommandButton/btn_cmd_study_off"));
+        result.Add(new DefaultCommand(config.Rest, this._Main,"勉強", "Images/CommandButton/btn_cmd_study_off"));
 
         return result.ToArray();
     }

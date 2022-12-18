@@ -11,20 +11,17 @@ public class DefaultCommand : ICommand
     string _Name;
     string _Path;
 
-    StatusUpdate _StatusUpdate;
-    CommandActionController _CommandAction;
+    MainController _Main;
 
     // TODO 最終的にはコンフィグに集約させる
     // TODO 演出の流れはメインコントローラーで定義してあげてもいいかも
-    public DefaultCommand(CommandStruct command, StatusUpdate statusUpdate, CommandActionController commandAction, string name, string path)
+    public DefaultCommand(CommandStruct command, MainController main, string name, string path)
     {
         this._CommandData = command;
         this._Name = name;
         this._Path = path;
 
-        this._StatusUpdate = statusUpdate;
-        this._CommandAction = commandAction;
-
+        this._Main = main;
     }
 
     string ICommand.Name()
@@ -82,15 +79,6 @@ public class DefaultCommand : ICommand
         }
 
         // アクション演出の実行  
-        this._CommandAction.ExternalStart(new CommandActionLinker()
-        {
-            ActionName = this._Name,
-            IsClear = isSucess,
-            OnComplete = () => 
-            {
-                // 増減アニメーション後に完了コールバックを叩く
-                this._StatusUpdate.PlayUpdateAnim(onComplete, this._CommandData);
-            },
-        });    
+        this._Main.ShowCommandEffect(this._Name, isSucess, this._CommandData, onComplete);
     }
 }
