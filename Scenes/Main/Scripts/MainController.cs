@@ -21,7 +21,7 @@ public class MainController : ControllerBase<MainViewModel>
         this._MainActionList.Add(new BeforeCommandNovel());
         this._StatusUpdate = new StatusUpdate(this._ViewModel.StatusContent.transform.Find("Root").gameObject, this._ViewModel.Status);
         this._MainActionList.Add(this._StatusUpdate);
-        this._MainActionList.Add(new CommandNovel(this._ViewModel.CommandButton, this._ViewModel.ComanndList.transform, this));
+        this._MainActionList.Add(new CommandAction(this._ViewModel.CommandButton, this._ViewModel.ComanndList.transform, this));
         this._MainActionList.Add(new AfterCommandNovel());
         this._MainActionList.Add(new OverTheDateEffect(this._ViewModel.DateLabel, this._ViewModel.DayUpdate));
         this._MainActionList.Add(new UpdatePlayerData());

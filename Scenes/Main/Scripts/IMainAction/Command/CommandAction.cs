@@ -8,7 +8,7 @@ using System.Linq;
 // --------------------
 // コマンド選択ADV
 // --------------------
-public class CommandNovel : IMainAction
+public class CommandAction : IMainAction
 {
     // 精鋭したコマンドリスト
     List<GameObject> _CommandObjList = new List<GameObject>();
@@ -18,7 +18,7 @@ public class CommandNovel : IMainAction
 
     MainController _Main;
 
-    public CommandNovel(ButtonBase commandButton, Transform commandButtonRoot, MainController main)
+    public CommandAction(ButtonBase commandButton, Transform commandButtonRoot, MainController main)
     {
         this._CommandButton = commandButton;
         this._CommandButtonRoot = commandButtonRoot;
