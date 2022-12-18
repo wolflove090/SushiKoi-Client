@@ -11,15 +11,33 @@ public class StatusCommand : ICommand
         Outdoor = 2,
     }
 
-    // TODO 動的に変更させたいため、indexをもらって発火時に参照するように変更
-    // 毎回ロードするのはエディタ時のみでよい
-    CommandStruct _CommandData;
+    int _CommandIndex;
+    CommandStruct _CommandDataValue;
+    CommandStruct _CommandData
+    {
+        get
+        {
+            // エディタ時は毎回取得(ホットリロード用)
+            if(Application.platform == RuntimePlatform.OSXEditor)
+            {
+                var config = ConfigManager.GetCommandConfig();
+                return config.Commands[this._CommandIndex];
+            }
+
+            if(this._CommandDataValue == null)
+            {
+                var config = ConfigManager.GetCommandConfig();
+                this._CommandDataValue = config.Commands[this._CommandIndex];
+            }
+            return this._CommandDataValue;
+        }
+    }
 
     MainController _Main;
 
-    public StatusCommand(CommandStruct command, MainController main)
+    public StatusCommand(int index, MainController main)
     {
-        this._CommandData = command;
+        this._CommandIndex = index;
         this._Main = main;
     }
 

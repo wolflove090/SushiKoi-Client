@@ -64,8 +64,7 @@ public class CommandNovel : IMainAction
 
         for(int i = 0; i < config.Commands.Length; i++)
         {
-            var command = config.Commands[i];
-            var model = new StatusCommand(command, this._Main);
+            var model = new StatusCommand(i, this._Main);
 
             result.Add(model);
         }
