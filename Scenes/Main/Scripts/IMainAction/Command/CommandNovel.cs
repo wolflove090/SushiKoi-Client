@@ -50,7 +50,7 @@ public class CommandNovel : IMainAction
             // コマンド背景
             var buttonBack = button.transform.Find("Pos/Back");
             var backImage = buttonBack.GetComponent<Image>();
-            backImage.sprite = Resources.Load<Sprite>(command.BackPath());
+            backImage.sprite = Resources.Load<Sprite>(command.IconPath());
 
             this._CommandObjList.Add(obj.gameObject);
         }
@@ -62,12 +62,13 @@ public class CommandNovel : IMainAction
         var result = new List<ICommand>();
         var config = ConfigManager.GetCommandConfig();
 
-        // 休む
-        result.Add(new StatusCommand(config.Rest, this._Main,"休む", "Images/CommandButton/btn_cmd_rest_off"));
+        for(int i = 0; i < config.Commands.Length; i++)
+        {
+            var command = config.Commands[i];
+            var model = new StatusCommand(command, this._Main);
 
-        // 勉強
-        result.Add(new StatusCommand(config.Study, this._Main,"勉強", "Images/CommandButton/btn_cmd_study_off"));
-
+            result.Add(model);
+        }
         return result.ToArray();
     }
 }

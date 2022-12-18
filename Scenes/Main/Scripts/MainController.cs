@@ -75,7 +75,7 @@ public class MainController : ControllerBase<MainViewModel>
     // --------------------
     // コマンド演出
     // --------------------
-    public void ShowCommandEffect(string name, bool isClear, CommandStruct command, System.Action onComplete)
+    public void ShowCommandEffect(string name, bool isClear, CommandStruct command, int decFreshness, System.Action onComplete)
     {
         this._ViewModel.CommandAction.ExternalStart(new CommandActionLinker()
         {
@@ -84,7 +84,7 @@ public class MainController : ControllerBase<MainViewModel>
             OnComplete = () => 
             {
                 // 増減アニメーション後に完了コールバックを叩く
-                this._StatusUpdate.PlayUpdateAnim(onComplete, command);
+                this._StatusUpdate.PlayUpdateAnim(onComplete, command, decFreshness);
             }
         });
     }

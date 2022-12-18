@@ -70,7 +70,7 @@ public class StatusUpdate : IMainAction
     }
 
     // ステータス更新アニメーション
-    public void PlayUpdateAnim(System.Action onComplete, CommandStruct command)
+    public void PlayUpdateAnim(System.Action onComplete, CommandStruct command, int decFreshness)
     {
         // すべてのアニメーション完了時にonCompleteを叩く
         int count = 1;
@@ -88,7 +88,7 @@ public class StatusUpdate : IMainAction
         foreach(var status in this._StatusList)
         {
             count++;
-            status.PlayUpdateAnim(complete, command);
+            status.PlayUpdateAnim(complete, command, decFreshness);
         }
 
         complete();
@@ -117,7 +117,7 @@ public class StatusLabel
     }
 
     // ステータス更新アニメーション
-    public void PlayUpdateAnim(System.Action onComplete, CommandStruct command)
+    public void PlayUpdateAnim(System.Action onComplete, CommandStruct command, int decFreshness)
     {
         var up = this.Icon.transform.Find("UpValue").GetComponent<TextMeshProUGUI>();
         var down = this.Icon.transform.Find("DownValue").GetComponent<TextMeshProUGUI>();
@@ -125,8 +125,15 @@ public class StatusLabel
         up.gameObject.SetActive(false);
         down.gameObject.SetActive(false);
 
+        List<CommandValue> targetValues = new List<CommandValue>(command.AddValue);
+        targetValues.Add(new CommandValue()
+        {
+            TargetType = PlayerCharaData.ParamType.Freshness,
+            Value = decFreshness,
+        });
+
         bool isTarget = false;
-        foreach(var value in command.AddValue)
+        foreach(var value in targetValues)
         {
             if(value.TargetType == this.ParamType)
             {
@@ -143,7 +150,6 @@ public class StatusLabel
                 }
             }
         }
-
         this.Icon.SetActive(isTarget);
 
         this.Anim.Play("status_update", 

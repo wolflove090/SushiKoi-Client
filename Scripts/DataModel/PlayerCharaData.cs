@@ -96,7 +96,7 @@ public class PlayerCharaData : IDataModel
     public static bool IsPositiveChange(CommandValue changeValue)
     {
         // TODO Switch文は嫌
-        bool isAddPositive = false; // 上昇したほうが有利
+        bool isAddPositive = false; // trueで上昇したほうが有利
         switch(changeValue.TargetType)
         {
             case PlayerCharaData.ParamType.Hp:

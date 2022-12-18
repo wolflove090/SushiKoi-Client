@@ -5,6 +5,6 @@ using UnityEngine;
 public interface ICommand
 {
     string Name();
-    string BackPath();
+    string IconPath();
     void Play(System.Action onComplete);
 }
