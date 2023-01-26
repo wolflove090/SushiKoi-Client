@@ -35,12 +35,14 @@ public class PerformanceManager : MonoBehaviour
     void Update()
     {
         this._FrameCount++;
-        this._Time += Time.deltaTime;
+        this._Time += Time.unscaledDeltaTime;
 
         if(this._Time >= 0.5f)
         {
+            var fps = Mathf.Floor(this._FrameCount / this._Time);
+            this._FpsValue.text = fps.ToString();
+
             this._Time = 0;
-            this._FpsValue.text = (this._FrameCount * 2).ToString();
             this._FrameCount = 0;
         }
     }
