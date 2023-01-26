@@ -27,4 +27,7 @@ public class MainViewModel : ViewModelBase
 
     // 選択肢
     public ChoiceController ChoiceContent;
+
+    // タップ禁止オブジェクト
+    public GameObject TapBlock;
 }

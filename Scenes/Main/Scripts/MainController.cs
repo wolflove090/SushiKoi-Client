@@ -30,6 +30,7 @@ public class MainController : ControllerBase<MainViewModel>
         this._MainActionList.Add(new AutoSave());
 
         this._ViewModel.CommandAction.Init();
+        this._ValidTap();
 
         // アクション開始
         this._PlayAction(0);
@@ -77,16 +78,41 @@ public class MainController : ControllerBase<MainViewModel>
     // --------------------
     public void ShowCommandEffect(string name, bool isClear, CommandStruct command, int decFreshness, System.Action onComplete)
     {
+        this._InvalidTap();
+        
         this._ViewModel.CommandAction.ExternalStart(new CommandActionLinker()
         {
             ActionName = name,
             IsClear = isClear,
             OnComplete = () => 
             {
+                System.Action complete = () => 
+                {
+                    onComplete?.Invoke();
+                    this._ValidTap();
+                };
+
                 // 増減アニメーション後に完了コールバックを叩く
-                this._StatusUpdate.PlayUpdateAnim(onComplete, command, decFreshness);
+                this._StatusUpdate.PlayUpdateAnim(complete, command, decFreshness);
+
             }
         });
+    }
+
+    // --------------------
+    // タップ無効化
+    // --------------------
+    void _InvalidTap()
+    {
+        this._ViewModel.TapBlock.SetActive(true);
+    }
+
+    // --------------------
+    // タップ有効化
+    // --------------------
+    void _ValidTap()
+    {
+        this._ViewModel.TapBlock.SetActive(false);
     }
 
     // --------------------
