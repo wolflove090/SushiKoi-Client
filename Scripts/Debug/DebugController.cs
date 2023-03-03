@@ -18,7 +18,7 @@ public class DebugController : ControllerBase<DebugViewModel>
     public static void Init()
     {
 #if !DEBUG        
-        throw new Exception("デバック機能が無効です");
+        throw new System.Exception("デバック機能が無効です");
 #endif
         const string prefabPath = "Prefabs/SushiKoiDebug";
         var prefab = Resources.Load<GameObject>(prefabPath);
