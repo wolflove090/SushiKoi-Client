@@ -5,27 +5,26 @@ using UnityEngine;
 // --------------------
 // コマンドアニメーション再生コントローラー
 // --------------------
-public class CommandActionController : ChildController<CommandActionViewModel, CommandActionLinker>
+public class CommandActionController : ChildController<ViewModelBase, CommandActionLinker>
 {
     public void Init() 
     {
-        // 初期は非表示
-        this._ViewModel.Root.SetActive(false);
+
     }
 
     protected override void _OnStart()
     {
-        this._ViewModel.Root.SetActive(true);
+        Debug.Log("演出開始");
 
-        this._ViewModel.ActionName.text = this._Linker.ActionName;
-        this._ViewModel.ClearStamp.SetActive(this._Linker.IsClear);
+        var path = ResoucePathDictionary.GetCommandAnimationPrefabPath(this._Linker.ActionName, this._Linker.IsClear);
+        var prefab = Resources.Load<GameObject>(path);
+        var obj = GameObject.Instantiate(prefab, this.transform);
 
-        // 演出再生
-        var animation = this.GetComponent<Animation>();
-        animation.Play("command_action", () => 
+        var anim = obj.GetComponent<Animation>();
+        anim.Play("anim", () => 
         {
             this._Linker.OnComplete();
-            this._ViewModel.Root.SetActive(false);
+            GameObject.Destroy(obj);
         });
     }
 }

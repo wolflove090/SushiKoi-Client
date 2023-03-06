@@ -20,7 +20,7 @@ public class MainViewModel : ViewModelBase
     public GameObject LikabilityStatus;
 
     // コマンドアクション
-    public CommandActionController CommandAction;
+    public CommandActionController CommandAnimation;
 
     // 日付更新演出
     public DayUpdateController DayUpdate;

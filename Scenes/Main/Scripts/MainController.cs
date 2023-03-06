@@ -29,7 +29,7 @@ public class MainController : ControllerBase<MainViewModel>
         this._MainActionList.Add(new LikabilityUpdate(this._ViewModel.LikabilityStatus));
         this._MainActionList.Add(new AutoSave());
 
-        this._ViewModel.CommandAction.Init();
+        this._ViewModel.CommandAnimation.Init();
         this._ValidTap();
 
         // アクション開始
@@ -80,7 +80,7 @@ public class MainController : ControllerBase<MainViewModel>
     {
         this._InvalidTap();
         
-        this._ViewModel.CommandAction.ExternalStart(new CommandActionLinker()
+        this._ViewModel.CommandAnimation.ExternalStart(new CommandActionLinker()
         {
             ActionName = name,
             IsClear = isClear,
@@ -94,7 +94,6 @@ public class MainController : ControllerBase<MainViewModel>
 
                 // 増減アニメーション後に完了コールバックを叩く
                 this._StatusUpdate.PlayUpdateAnim(complete, command, decFreshness);
-
             }
         });
     }
